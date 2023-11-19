@@ -1,6 +1,6 @@
 # basic_ecom
 
-A basic e-commerce React project used on my mentorship programme.
+A basic e-commerce React project.
 
 ## Technologies
 
@@ -18,6 +18,7 @@ A basic e-commerce React project used on my mentorship programme.
 - [Typescript](https://www.typescriptlang.org/) - Static types
 - [React Router](https://reactrouter.com/en/main) - Routing
 - [Tailwindcss](https://tailwindcss.com/) - Style
+- [React icons](https://react-icons.github.io/react-icons/) - Icons
 
 ## Installation
 
@@ -38,4 +39,14 @@ $ nvm use
 
 ```sh
 $ npm install
+
+```
+
+## Development
+
+- Run local dev server
+
+```sh
+$ npm run dev
+
 ```
