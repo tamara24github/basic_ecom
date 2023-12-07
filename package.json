@@ -11,6 +11,7 @@
     "prepare": "husky install",
     "format": "prettier --write",
     "check": "tsc",
+    "server": "json-server -p 3000 -w db.json",
     "test": ""
   },
   "engines": {
@@ -38,6 +39,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "husky": "^8.0.0",
+    "json-server": "^0.17.4",
     "lint-staged": "^15.0.2",
     "postcss": "^8.4.31",
     "prettier": "3.0.3",

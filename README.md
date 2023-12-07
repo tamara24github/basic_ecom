@@ -19,6 +19,7 @@ A basic e-commerce React project.
 - [React Router](https://reactrouter.com/en/main) - Routing
 - [Tailwindcss](https://tailwindcss.com/) - Style
 - [React icons](https://react-icons.github.io/react-icons/) - Icons
+- [JSON server](https://www.npmjs.com/package/json-server) - Server
 
 ## Installation
 
