@@ -19,7 +19,7 @@ type Feature =
   | 'Available in various sizes'
   | 'Cozy and warm'
 
-type Product = {
+export type Product = {
   id: string
   name: string
   category: Category
@@ -32,4 +32,4 @@ type Product = {
   features: Feature[]
 }
 
-export const getAllProducts = () => jsonServerApi<Product>(PATH)
+export const getAllProducts = () => jsonServerApi<Product[]>(PATH)
