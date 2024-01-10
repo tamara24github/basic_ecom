@@ -17,18 +17,18 @@ function Shop() {
     return <>{JSON.stringify(error)}</>
   }
   if (!data?.length) {
-    return <>There is no products</>
+    return <>There is no such item</>
   }
 
   return (
     <>
       <form className="mx-auto my-[3rem] text-center">
-        <label className="font-semibold text-lg text-blue-950">
+        <label className="font-semibold text-2xl text-blue-950">
           Explore our Shop: Elevate your ride
         </label>
         <input
-          className="mt-3 block w-[600px] px-3 py-2 border-2 border-blue-400 rounded-md focus:outline-none focus:border-blue-950 focus:ring-1 focus:ring-blue-400"
-          placeholder="search"
+          className="mt-3 block md:w-[600px] w-full px-3 py-2 border-2 border-blue-400 rounded-md focus:outline-none focus:border-blue-950 focus:ring-1 focus:ring-blue-400"
+          placeholder="Search"
         />
       </form>
       <ul className="grid lg:grid-cols-4 md:grid-cols-2 gap-10 mx-[4rem] my-[2rem] ">
