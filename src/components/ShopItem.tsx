@@ -1,4 +1,7 @@
 import { Product } from '../services/products'
+import Paragraph from './common/Paragraph'
+import Button from './common/Button'
+import Heading from './common/Heading'
 
 type Props = {
   product: Product
@@ -12,14 +15,34 @@ function ShopItem({ product }: Props) {
         alt="image"
         className="h-[250px] bg-no-repeat object-center bg-transparent object-cover aspect-[4/3] mb-1"
       />
-      <h3 className="m-1 font-semibold  text-blue-950 text-lg">
+      <Heading
+        as="h2"
+        color="blueDark"
+        fontWeight="semibold"
+        fontSize="large"
+        className="m-1"
+      >
         {product.name}
-      </h3>
-      <p className="mb-3 font-semibold">{product.price} €</p>
-      <p className="mx-6 mb-3 w-[250px]">{product.description}</p>
-      <p className="w-[250px]  text-blue-500">
+      </Heading>
+      <Paragraph weight="bold" size="md" className="mb-3">
+        {product.price} €
+      </Paragraph>
+      <Paragraph className="mx-6 mb-2 w-[230px] h-[45px]">
+        {product.description}
+      </Paragraph>
+      <Paragraph weight="semibold" className="w-[230px]  text-blue-500">
         Available in color: {product.color}
-      </p>
+      </Paragraph>
+      <Button
+        rounded="md"
+        backgroundColor="blueDark"
+        hover="blueLight"
+        fontWeight="semibold"
+        textColor="white"
+        className="w-full p-2 mt-3 text-lg "
+      >
+        + Add to Cart
+      </Button>
     </li>
   )
 }

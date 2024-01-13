@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const links = [
   { label: 'Home', path: '/', divide: '|' },
@@ -13,12 +13,12 @@ function Navbar() {
       {links.map((link) => {
         return (
           <React.Fragment key={link.label}>
-            <Link
+            <NavLink
               to={link.path}
-              className="text-blue-950 hover:bg-blue-400 hover:text-white rounded-md px-3 py-2 text-xl font-medium  mx-3.5"
+              className="text-blue-950 hover:bg-blue-400 hover:text-white rounded-md px-3 py-2 text-xl font-medium  mx-3.5 [&.active]:bg-blue-950 [&.active]:text-white"
             >
               {link.label}
-            </Link>
+            </NavLink>
             <p className="inline text-blue-400 text-xl mt-1 mx-2">
               {link.divide}
             </p>
