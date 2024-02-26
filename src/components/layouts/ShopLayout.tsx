@@ -1,13 +1,11 @@
 import { Outlet } from 'react-router-dom'
-import Navbar from './Navbar'
-import Footer from './Footer'
+import Footer from '../Footer'
+import ShopHeader from '../ShopHeader'
 
-const Layout = () => {
+const ShopLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <header>
-        <Navbar />
-      </header>
+      <ShopHeader />
 
       <main className="grow flex flex-col">
         <Outlet />
@@ -18,4 +16,4 @@ const Layout = () => {
   )
 }
 
-export default Layout
+export default ShopLayout

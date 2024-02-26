@@ -2,12 +2,16 @@ import { Product } from '../services/products'
 import Paragraph from './common/Paragraph'
 import Button from './common/Button'
 import Heading from './common/Heading'
+import { CartContext } from '../contexts/CartContext'
+import { useContext } from 'react'
 
 type Props = {
   product: Product
 }
 
 function ShopItem({ product }: Props) {
+  const { addCartItem } = useContext(CartContext)
+
   return (
     <li className="border-2 border-blue-150 bg-blue-50 flex flex-col items-center drop-shadow-md p-1.5">
       <img
@@ -40,6 +44,7 @@ function ShopItem({ product }: Props) {
         fontWeight="semibold"
         textColor="white"
         className="w-full p-2 mt-3 text-lg "
+        onClick={() => addCartItem(product)}
       >
         + Add to Cart
       </Button>
