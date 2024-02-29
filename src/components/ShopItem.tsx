@@ -19,6 +19,7 @@ function ShopItem({ product }: Props) {
         alt="image"
         className="h-[250px] bg-no-repeat object-center bg-transparent object-cover aspect-[4/3] mb-1"
       />
+
       <Heading
         as="h2"
         color="blueDark"
@@ -28,6 +29,7 @@ function ShopItem({ product }: Props) {
       >
         {product.name}
       </Heading>
+
       <Paragraph weight="bold" size="md" className="mb-3">
         {product.price} €
       </Paragraph>
