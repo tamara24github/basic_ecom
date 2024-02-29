@@ -46,7 +46,6 @@ function CartItem({ cartItem, index }: Props) {
 
         <Button
           textColor="red"
-          hover="red"
           className="w-20 h-8 border border-red-200 "
           onClick={() => deleteCartItem(cartItem.id)}
         >
