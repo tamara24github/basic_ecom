@@ -24,6 +24,8 @@ const variants = {
   },
   textColor: {
     white: 'text-white',
+    red: 'text-red-600',
+    green: 'text-green-600',
   },
 }
 
@@ -35,15 +37,17 @@ type Props = {
   rounded?: keyof typeof variants.rounded
   hover?: keyof typeof variants.hover
   textColor?: keyof typeof variants.textColor
+  onClick?: () => void
 }
 function Button({
   backgroundColor = 'transparent',
-  fontWeight = 'semibold',
-  rounded = 'md',
-  hover = 'transparent',
-  textColor = 'white',
-  className,
   children,
+  className,
+  fontWeight = 'semibold',
+  hover = 'transparent',
+  rounded = 'md',
+  textColor = 'white',
+  ...props
 }: Props) {
   return (
     <button
@@ -55,6 +59,7 @@ function Button({
         variants.textColor[textColor],
         className,
       )}
+      {...props}
     >
       {children}
     </button>

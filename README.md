@@ -20,7 +20,7 @@ A basic e-commerce React project.
 - [Tailwindcss](https://tailwindcss.com/) - Style
 - [React icons](https://react-icons.github.io/react-icons/) - Icons
 - [JSON server](https://www.npmjs.com/package/json-server) - Server
-- [ReactQuery](https://tanstack.com/query/latest) - Library for managing server state
+- [ReactQuery](https://tanstack.com/query/latest) - Library for managing state
 
 ## Installation
 
