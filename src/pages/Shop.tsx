@@ -2,26 +2,27 @@ import { getAllProducts, Product } from '../services/products'
 import { useQuery } from '@tanstack/react-query'
 import ShopItem from '../components/ShopItem'
 import Heading from '../components/common/Heading'
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useState, useCallback, ChangeEvent } from 'react'
 
 function Shop() {
   const [searchItem, setSearchItem] = useState('')
 
   const handleSearchItem = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchItem(e.target.value)
-    console.log(searchItem)
   }
 
-  useEffect(() => {
-    ;(products: Product[]) =>
+  const productsFilter = useCallback(
+    (products: Product[]) =>
       products.filter((product) =>
         product.name.toLowerCase().includes(searchItem.toLowerCase()),
-      )
-  }, [searchItem])
+      ),
+    [searchItem],
+  )
 
   const productsQuery = useQuery({
     queryKey: ['products'],
     queryFn: () => getAllProducts(),
+    select: productsFilter,
   })
 
   const { error, isLoading, data } = productsQuery
