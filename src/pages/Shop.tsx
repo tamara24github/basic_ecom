@@ -1,9 +1,24 @@
-import { getAllProducts } from '../services/products'
+import { getAllProducts, Product } from '../services/products'
 import { useQuery } from '@tanstack/react-query'
 import ShopItem from '../components/ShopItem'
 import Heading from '../components/common/Heading'
+import { useState, useEffect, ChangeEvent } from 'react'
 
 function Shop() {
+  const [searchItem, setSearchItem] = useState('')
+
+  const handleSearchItem = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchItem(e.target.value)
+    console.log(searchItem)
+  }
+
+  useEffect(() => {
+    ;(products: Product[]) =>
+      products.filter((product) =>
+        product.name.toLowerCase().includes(searchItem.toLowerCase()),
+      )
+  }, [searchItem])
+
   const productsQuery = useQuery({
     queryKey: ['products'],
     queryFn: () => getAllProducts(),
@@ -28,6 +43,8 @@ function Shop() {
           Explore our Shop: Elevate your ride
         </Heading>
         <input
+          onChange={handleSearchItem}
+          value={searchItem}
           className="mt-3 block md:w-[600px] w-full px-3 py-2 border-2 border-blue-400 rounded-md focus:outline-none focus:border-blue-950 focus:ring-1 focus:ring-blue-400"
           placeholder="Search"
         />

@@ -13,7 +13,7 @@ function Cart() {
     <Popper
       anchorElement={
         <div className="relative flex flex-col">
-          <div className="bg-pink-200 w-5 text-center rounded-full font-semibold  text-blue-950 absolute right-[23px]">
+          <div className="bg-blue-950 w-5 text-center rounded-full font-semibold  text-white absolute right-[23px]">
             {cartCount}
           </div>
           <TiShoppingCart className="text-4xl text-blue-950 mr-4 mt-[18px] cursor-pointer" />
