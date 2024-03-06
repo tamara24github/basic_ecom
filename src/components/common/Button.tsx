@@ -21,6 +21,7 @@ const variants = {
     blueDark: 'hover:bg-blue-950',
     blueLight: 'hover:bg-blue-500',
     transparent: 'hover:bg-transparent',
+    red: 'hover:bg-red-600 hover:text-white',
   },
   textColor: {
     white: 'text-white',
