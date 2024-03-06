@@ -31,10 +31,8 @@ function ShopItem({ product }: Props) {
       <Paragraph weight="bold" size="md" className="mb-3">
         {product.price} €
       </Paragraph>
-      <Paragraph className="mx-6 mb-2 w-[230px] h-[45px]">
-        {product.description}
-      </Paragraph>
-      <Paragraph weight="semibold" className="w-[230px]  text-blue-500">
+      <Paragraph className="mx-6 mb-2">{product.description}</Paragraph>
+      <Paragraph weight="semibold" className=" text-blue-500">
         Available in color: {product.color}
       </Paragraph>
       <Button
