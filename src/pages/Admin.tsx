@@ -16,7 +16,7 @@ function Admin() {
   return (
     <div className="flex flex-col items-center">
       <div className="flex my-12">
-        <TextField placeholder="Search" />
+        <TextField placeholder="Search" classNameInput="" />
         <Button
           backgroundColor="blueLight"
           hover="blueDark"

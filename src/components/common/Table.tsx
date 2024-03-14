@@ -1,3 +1,4 @@
+import { twMerge } from 'tailwind-merge'
 import { Product } from '../../services/products'
 
 type TableProps = {
@@ -21,10 +22,13 @@ function Table({ data, isLoading, error }: TableProps) {
     <table className="w-[95%] text-center border-x border-teal-200 mb-4">
       <thead>
         <tr>
-          {config.map((tableHeader) => {
+          {config.map((tableHeader, index) => {
             return (
               <td
-                className="py-3 px-9 bg-blue-950 text-white font-bold text-lg border-2  border-teal-100 rounded-b-[11px] drop-shadow-md "
+                className={twMerge(
+                  'py-3 px-9 bg-blue-950 text-white font-bold text-lg border-2  border-teal-100 rounded-b-[11px] drop-shadow-md ',
+                  [1, 2].includes(index) && 'hidden md:table-cell',
+                )}
                 key={tableHeader.label}
               >
                 {tableHeader.label}
@@ -63,9 +67,14 @@ function Table({ data, isLoading, error }: TableProps) {
                 index % 2 === 0 ? 'bg-blue-50 ' : 'bg-blue-100 bg-opacity-[0.8]'
               }
             >
-              {config.map((x) => {
+              {config.map((x, index) => {
                 return (
-                  <td className="font-semibold text-blue-950 px-2 py-3  border-b-2 border-teal-200 border-dashed ">
+                  <td
+                    className={twMerge(
+                      'font-semibold text-blue-950 px-2 py-3  border-b-2 border-teal-200 border-dashed ',
+                      [1, 2].includes(index) && 'hidden md:table-cell',
+                    )}
+                  >
                     {row[x.field]}
                     {x.field === 'price' && ' € '}
                   </td>
