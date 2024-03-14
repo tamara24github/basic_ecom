@@ -7,7 +7,7 @@ type TableProps = {
 }
 
 function Table({ data, isLoading, error }: TableProps) {
-  const config: { label: string; field: keyof Product }[] = [
+  const config: { label: string; field: keyof Product; style?: string }[] = [
     {
       label: 'Product Name',
       field: 'name',
@@ -18,13 +18,13 @@ function Table({ data, isLoading, error }: TableProps) {
     { label: 'Quantity', field: 'stockQuantity' },
   ]
   return (
-    <table className="w-[95%] text-center">
+    <table className="w-[95%] text-center border-x border-teal-200 mb-4">
       <thead>
         <tr>
           {config.map((tableHeader) => {
             return (
               <td
-                className="py-2 px-9 border-2 border-white bg-blue-950 text-white font-bold text-lg"
+                className="py-3 px-9 bg-blue-950 text-white font-bold text-lg border-2  border-teal-100 rounded-b-[11px] drop-shadow-md "
                 key={tableHeader.label}
               >
                 {tableHeader.label}
@@ -55,11 +55,21 @@ function Table({ data, isLoading, error }: TableProps) {
             </td>
           </tr>
         )}
-        {data.map((row) => {
+        {data.map((row, index) => {
           return (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              className={
+                index % 2 === 0 ? 'bg-blue-50 ' : 'bg-blue-100 bg-opacity-[0.8]'
+              }
+            >
               {config.map((x) => {
-                return <td>{row[x.field]}</td>
+                return (
+                  <td className="font-semibold text-blue-950 px-2 py-3  border-b-2 border-teal-200 border-dashed ">
+                    {row[x.field]}
+                    {x.field === 'price' && ' € '}
+                  </td>
+                )
               })}
             </tr>
           )
