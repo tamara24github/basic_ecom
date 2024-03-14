@@ -41,7 +41,7 @@ function Shop() {
           onChange={handleSearchItem}
           value={searchItem}
           placeholder="Search"
-          className="mt-5"
+          className="mt-5 md:w-[600px]"
         />
       </div>
 
