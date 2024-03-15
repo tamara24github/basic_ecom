@@ -32,22 +32,22 @@ function Admin() {
   return (
     <div className="flex flex-col items-center">
       <div className="flex my-12">
-        <TextField
-          placeholder="Search"
-          className="md:w-[500px]"
-          onChange={handleSearchItem}
-          value={searchItem}
-        />
         <Button
           backgroundColor="blueLight"
           hover="blueDark"
           rounded="xl2"
           fontWeight="bold"
-          className="ml-6 px-6 py-2 text-lg flex items-center"
+          className="mr-16  px-6 py-2 text-lg flex items-center"
         >
           <IoMdAddCircleOutline className="mr-2 w-[24px] h-[24px]" />
-          Add
+          Add Product
         </Button>
+        <TextField
+          placeholder="Search Product"
+          className="md:w-[500px]"
+          onChange={handleSearchItem}
+          value={searchItem}
+        />
       </div>
 
       <Table data={data || []} isLoading={isLoading} error={error}></Table>
