@@ -37,18 +37,17 @@ function ProductForm({ onCloseModal }: Props) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // Todo : keep for later
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const values = {
-      name,
-      description,
-      image,
-      price,
-      stockQuantity,
-      category,
-      color,
-      feature,
-      isAvailable,
-    }
+    // const values = {
+    //   name,
+    //   description,
+    //   image,
+    //   price,
+    //   stockQuantity,
+    //   category,
+    //   color,
+    //   feature,
+    //   isAvailable,
+    // }
   }
 
   const handleProductName = (e: React.ChangeEvent<HTMLInputElement>) => {
