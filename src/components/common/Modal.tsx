@@ -1,12 +1,13 @@
 import { ReactNode, useEffect } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type Props = {
   closeModal: () => void
   children: ReactNode
-  actionBar: ReactNode
+  className: string
 }
 
-function Modal({ closeModal, children, actionBar }: Props) {
+function Modal({ closeModal, children, className }: Props) {
   useEffect(() => {
     document.body.classList.add('overflow-hidden')
 
@@ -15,16 +16,20 @@ function Modal({ closeModal, children, actionBar }: Props) {
     }
   }, [])
   return (
-    <>
+    <div className="flex flex-col items-center fixed z-10 inset-0 overflow-y-auto">
       <div
-        className="fixed bg-gray-300 opacity-80 inset-0 z-40"
+        className="fixed -z-[1] inset-0 bg-opacity-50 bg-gray-900 backdrop-blur-sm"
         onClick={closeModal}
       />
-      <div className="fixed inset-x-40 p-8 bg-white rounded-lg z-50 flex flex-col justify-between">
+      <div
+        className={twMerge(
+          'm-4 bg-white rounded-md px-6 py-4 md:px-8 md:py-6 shadow-md',
+          className,
+        )}
+      >
         {children}
-        <div className="flex justify-center ">{actionBar}</div>
       </div>
-    </>
+    </div>
   )
 }
 

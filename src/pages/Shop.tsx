@@ -34,14 +34,20 @@ function Shop() {
   return (
     <>
       <div className="mx-auto my-[3rem] text-center">
-        <Heading fontWeight="semibold" fontSize="xl2" color="blueDark">
+        <Heading
+          fontWeight="semibold"
+          fontSize="xl2"
+          color="blueDark"
+          className="mb-5"
+        >
           Explore our Shop: Elevate your ride
         </Heading>
         <TextField
+          withIcon
           onChange={handleSearchItem}
           value={searchItem}
           placeholder="Search"
-          className="mt-5 md:w-[600px]"
+          className=" md:w-[600px]"
         />
       </div>
 

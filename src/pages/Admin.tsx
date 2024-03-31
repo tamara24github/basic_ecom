@@ -7,6 +7,7 @@ import { IoMdAddCircleOutline } from 'react-icons/io'
 import { ChangeEvent, useCallback, useState } from 'react'
 import Modal from '../components/common/Modal'
 import Paragraph from '../components/common/Paragraph'
+import ProductForm from '../components/ProductForm'
 
 function Admin() {
   const [showModal, setShowModal] = useState(false)
@@ -39,40 +40,18 @@ function Admin() {
 
   const { error, isLoading, data } = productsQuery
 
-  const actionBar = (
-    <>
-      <Button
-        backgroundColor="blueDark"
-        hover="blueLight"
-        fontWeight="bold"
-        className="mr-10 p-2 w-28 text-lg "
-      >
-        Add
-      </Button>
-      <Button
-        fontWeight="bold"
-        backgroundColor="transparent"
-        textColor="red"
-        hover="red"
-        onClick={handleCloseModal}
-        className="p-2 w-28 text-lg border  border-red-600"
-      >
-        Close
-      </Button>
-    </>
-  )
-
   return (
     <>
       {showModal && (
-        <Modal closeModal={handleCloseModal} actionBar={actionBar}>
+        <Modal closeModal={handleCloseModal} className="items-center">
           <Paragraph
             weight="semibold"
             color="blueDark"
-            className="mx-auto text-xl"
+            className="text-center mb-4 text-2xl font-bold"
           >
             Add Product
           </Paragraph>
+          <ProductForm onCloseModal={handleCloseModal} />
         </Modal>
       )}
       <div className="flex flex-col items-center">
@@ -90,6 +69,7 @@ function Admin() {
           </Button>
 
           <TextField
+            withIcon
             placeholder="Search Product"
             className="md:w-[500px]"
             onChange={handleSearchItem}
