@@ -4,6 +4,8 @@ const PATH = '/products'
 
 type Color = 'Black' | 'Gray' | 'Navy Blue' | 'Burgundy'
 
+export const colors: Color[] = ['Black', 'Burgundy', 'Gray', 'Navy Blue']
+
 type Category =
   | 'Jackets'
   | 'Footwear'
@@ -12,12 +14,29 @@ type Category =
   | 'Bottoms'
   | 'Shirts'
 
+export const categories: Category[] = [
+  'Accessories',
+  'Bottoms',
+  'Footwear',
+  'Jackets',
+  'Shirts',
+  'Snowsuits',
+]
+
 type Feature =
   | 'Water resistant'
   | '100% Merino wool'
   | 'Windproof'
   | 'Available in various sizes'
   | 'Cozy and warm'
+
+export const features: Feature[] = [
+  '100% Merino wool',
+  'Available in various sizes',
+  'Cozy and warm',
+  'Water resistant',
+  'Windproof',
+]
 
 export type Product = {
   id: string

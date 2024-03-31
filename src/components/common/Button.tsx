@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 const variants = {
@@ -30,15 +30,12 @@ const variants = {
   },
 }
 
-type Props = {
-  children?: ReactNode
-  className?: string
+type Props = ComponentProps<'button'> & {
   backgroundColor?: keyof typeof variants.backgroundColor
   fontWeight?: keyof typeof variants.fontWeight
   rounded?: keyof typeof variants.rounded
   hover?: keyof typeof variants.hover
   textColor?: keyof typeof variants.textColor
-  onClick?: () => void
 }
 function Button({
   backgroundColor = 'transparent',
