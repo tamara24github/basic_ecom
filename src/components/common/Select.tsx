@@ -1,4 +1,3 @@
-import { twMerge } from 'tailwind-merge'
 import Label from './Label'
 
 type Props = {
@@ -21,7 +20,7 @@ function Select({
   placeholder,
 }: Props) {
   return (
-    <div className={twMerge('', className)}>
+    <div className={className}>
       {label && <Label required={required}>{label}</Label>}
       <select
         placeholder={placeholder}

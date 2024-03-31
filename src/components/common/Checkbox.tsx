@@ -11,7 +11,7 @@ type Props = {
 
 function Checkbox({ className, onClick, value, label, required }: Props) {
   return (
-    <div className="flex items-baseline mb-4 mt-2">
+    <div className={twMerge(className, 'flex items-baseline mb-4 mt-2')}>
       {label && (
         <Label required={required} className="mb-0">
           {label}
@@ -20,7 +20,7 @@ function Checkbox({ className, onClick, value, label, required }: Props) {
       <input
         required={required}
         type="checkbox"
-        className={twMerge('w-5 h-5 mt-1 ml-3 rounded-md', className)}
+        className="w-5 h-5 mt-1 ml-3 rounded-md"
         onClick={onClick}
         checked={value}
       />

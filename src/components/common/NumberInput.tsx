@@ -21,7 +21,7 @@ function NumberInput({
   required,
 }: Props) {
   return (
-    <div className={twMerge('', className)}>
+    <div className={className}>
       {label && <Label required={required}>{label}</Label>}
       <div className="relative">
         {withIcon && (
