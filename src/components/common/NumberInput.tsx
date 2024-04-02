@@ -2,7 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import Label from './Label'
 
 type Props = {
-  value: string
+  value: string | number
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
   placeholder?: string

@@ -52,3 +52,29 @@ export type Product = {
 }
 
 export const getAllProducts = () => jsonServerApi<Product[]>(PATH)
+
+type CreateProductPayload = {
+  name: string
+  description?: string
+  image: string
+  price: number
+  stockQuantity: number
+  category: string
+  color: string
+  features?: string[]
+  isAvailable: boolean
+}
+
+export const createProduct = (payload: CreateProductPayload) =>
+  jsonServerApi<Product>(PATH, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify(payload),
+  })
+
+// export const deleteProduct = () =>
+//   jsonServerApi<Product>(PATH, {
+//     method: 'DELETE',
+//   })
