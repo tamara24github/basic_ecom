@@ -1,12 +1,19 @@
 import { useState } from 'react'
 import TextField from './common/TextField'
-import { categories, colors, features } from '../services/products'
+import {
+  Product,
+  categories,
+  colors,
+  createProduct,
+  features,
+} from '../services/products'
 import NumberInput from './common/NumberInput'
 import TextArea from './common/TextArea'
 import RadioGroup from './common/RadioGroup'
 import Checkbox from './common/Checkbox'
 import Select from './common/Select'
 import Button from './common/Button'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const categoryOptions = categories.map((category) => {
   return { label: category, value: category }
@@ -27,27 +34,53 @@ function ProductForm({ onCloseModal }: Props) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
-  const [price, setProduct] = useState('')
-  const [stockQuantity, setStockQuantity] = useState('')
+  const [price, setPrice] = useState(0)
+  const [stockQuantity, setStockQuantity] = useState(0)
   const [category, setCategory] = useState('')
   const [color, setColor] = useState('')
-  const [feature, setFeature] = useState('')
+  const [features, setFeatures] = useState('')
   const [isAvailable, setIsAvailable] = useState(false)
+
+  const queryClient = useQueryClient()
+  const { data, error, isPending, isSuccess, mutate } = useMutation({
+    mutationFn: createProduct,
+    onSuccess: (data) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (currentValue?: Product[]) => {
+          return currentValue ? [...currentValue, data] : [data]
+        },
+      )
+      setName('')
+      setDescription('')
+      setImage('')
+      setPrice(0)
+      setStockQuantity(0)
+      setCategory('')
+      setColor('')
+      setFeatures('')
+      setIsAvailable(false)
+    },
+  })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Todo : keep for later
-    // const values = {
-    //   name,
-    //   description,
-    //   image,
-    //   price,
-    //   stockQuantity,
-    //   category,
-    //   color,
-    //   feature,
-    //   isAvailable,
-    // }
+
+    const values = {
+      name,
+      description,
+      image,
+      price,
+      stockQuantity,
+      category,
+      color,
+      features: [features],
+      isAvailable,
+    }
+
+    mutate(values)
   }
 
   const handleProductName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,10 +98,10 @@ function ProductForm({ onCloseModal }: Props) {
   }
 
   const handleProductPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProduct(e.target.value)
+    setPrice(Number(e.target.value))
   }
   const handleStockQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStockQuantity(e.target.value)
+    setStockQuantity(Number(e.target.value))
   }
 
   const handleCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,8 +112,8 @@ function ProductForm({ onCloseModal }: Props) {
     setColor(e.target.value)
   }
 
-  const handleFeature = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFeature(e.target.value)
+  const handleFeatures = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFeatures(e.target.value)
   }
 
   const handleCheckbox = () => {
@@ -139,9 +172,9 @@ function ProductForm({ onCloseModal }: Props) {
         />
         <Select
           className="md:w-[42%] w-full"
-          value={feature}
+          value={features}
           label="Features"
-          onChange={handleFeature}
+          onChange={handleFeatures}
           options={featureOptions}
         />
       </div>
@@ -173,6 +206,19 @@ function ProductForm({ onCloseModal }: Props) {
           label="Is Available"
         />
       </div>
+
+      {error && (
+        <p className="text-red-500 text-center text-lg">
+          Something went wrong, please try again
+        </p>
+      )}
+
+      {isSuccess && (
+        <p className="text-green-500 text-center text-lg">
+          Product "{data.name}" successfully added
+        </p>
+      )}
+
       <div className="flex justify-center mt-4">
         <Button
           backgroundColor="blueDark"
@@ -180,6 +226,7 @@ function ProductForm({ onCloseModal }: Props) {
           fontWeight="bold"
           className="mr-10 p-2 w-28 text-lg "
           type="submit"
+          disabled={isPending}
         >
           Add
         </Button>

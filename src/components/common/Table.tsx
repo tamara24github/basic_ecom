@@ -38,7 +38,7 @@ function Table({ data, isLoading, error }: TableProps) {
         </tr>
       </thead>
       <tbody>
-        {!data.length && (
+        {!data.length && !isLoading && !error && (
           <tr>
             <td className="text-center" colSpan={5}>
               There is no such item
