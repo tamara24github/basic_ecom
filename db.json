@@ -1,7 +1,31 @@
 {
   "products": [
     {
-      "id": "3",
+      "id": 1,
+      "name": "Men's Winter Jacket",
+      "category": "Jackets",
+      "description": "A warm and stylish jacket for men.",
+      "color": "Black",
+      "price": 89.99,
+      "availability": true,
+      "stockQuantity": 50,
+      "image": "https://source.unsplash.com/featured/?jackets",
+      "features": ["Water resistant", "Windproof"]
+    },
+    {
+      "id": 2,
+      "name": "Women's Snow Boots",
+      "category": "Footwear",
+      "description": "Comfortable and sturdy snow boots for women.",
+      "color": "Black",
+      "price": 79.99,
+      "availability": true,
+      "stockQuantity": 40,
+      "image": "https://source.unsplash.com/featured/?footwear",
+      "features": ["Water resistant", "Available in various sizes"]
+    },
+    {
+      "id": 3,
       "name": "Unisex Wool Sweater",
       "category": "Shirts",
       "description": "Soft and cozy wool sweater for all genders.",
@@ -13,7 +37,19 @@
       "features": ["100% Merino wool", "Available in various sizes"]
     },
     {
-      "id": "5",
+      "id": 4,
+      "name": "Kids' Snowsuit",
+      "category": "Snowsuits",
+      "description": "Adorable and warm snowsuit for kids.",
+      "color": "Navy Blue",
+      "price": 69.99,
+      "availability": true,
+      "stockQuantity": 30,
+      "image": "https://source.unsplash.com/featured/?snowsuits",
+      "features": ["Water resistant", "Windproof"]
+    },
+    {
+      "id": 5,
       "name": "Fleece Neck Warmer",
       "category": "Accessories",
       "description": "Soft and versatile neck warmer for extra warmth.",
@@ -25,7 +61,7 @@
       "features": ["100% Merino wool", "Cozy and warm"]
     },
     {
-      "id": "6",
+      "id": 6,
       "name": "Men's Thermal Underwear Set",
       "category": "Bottoms",
       "description": "High-quality thermal set for men's winter layering.",
@@ -37,7 +73,7 @@
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
-      "id": "7",
+      "id": 7,
       "name": "Women's Insulated Gloves",
       "category": "Accessories",
       "description": "Stylish and warm insulated gloves for women.",
@@ -49,7 +85,7 @@
       "features": ["Cozy and warm", "Available in various sizes"]
     },
     {
-      "id": "8",
+      "id": 8,
       "name": "Men's Quilted Vest",
       "category": "Jackets",
       "description": "Versatile quilted vest for men's winter layering.",
@@ -61,7 +97,7 @@
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
-      "id": "9",
+      "id": 9,
       "name": "Women's Cable-Knit Scarf",
       "category": "Accessories",
       "description": "Elegant cable-knit scarf for women.",
@@ -73,7 +109,7 @@
       "features": ["100% Merino wool", "Cozy and warm"]
     },
     {
-      "id": "10",
+      "id": 10,
       "name": "Unisex Beanie Hat",
       "category": "Accessories",
       "description": "Warm and stylish beanie hat for all genders.",
@@ -85,7 +121,7 @@
       "features": ["100% Merino wool", "Cozy and warm"]
     },
     {
-      "id": "11",
+      "id": 11,
       "name": "Men's Heavyweight Parka",
       "category": "Jackets",
       "description": "Durable and insulated parka for extreme cold.",
@@ -97,7 +133,7 @@
       "features": ["Windproof", "Available in various sizes"]
     },
     {
-      "id": "12",
+      "id": 12,
       "name": "Women's Thermal Leggings",
       "category": "Bottoms",
       "description": "Soft and warm thermal leggings for women.",
@@ -109,7 +145,7 @@
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
-      "id": "13",
+      "id": 13,
       "name": "Men's Flannel Shirt",
       "category": "Shirts",
       "description": "Classic flannel shirt for men.",
@@ -121,7 +157,7 @@
       "features": ["Cozy and warm", "Available in various sizes"]
     },
     {
-      "id": "14",
+      "id": 14,
       "name": "Women's Puffer Jacket",
       "category": "Jackets",
       "description": "Stylish and warm puffer jacket for women.",
@@ -133,7 +169,7 @@
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
-      "id": "15",
+      "id": 15,
       "name": "Unisex Wool Blend Socks",
       "category": "Accessories",
       "description": "Cozy wool blend socks for all genders.",
@@ -145,7 +181,7 @@
       "features": ["100% Merino wool", "Cozy and warm"]
     },
     {
-      "id": "16",
+      "id": 16,
       "name": "Kids' Fleece Mittens",
       "category": "Accessories",
       "description": "Soft and warm fleece mittens for kids.",
