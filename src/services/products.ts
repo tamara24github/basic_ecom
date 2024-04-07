@@ -74,7 +74,10 @@ export const createProduct = (payload: CreateProductPayload) =>
     body: JSON.stringify(payload),
   })
 
-// export const deleteProduct = () =>
-//   jsonServerApi<Product>(PATH, {
-//     method: 'DELETE',
-//   })
+export const deleteProduct = (id: string = '') =>
+  jsonServerApi<Product>(`${PATH}/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  })

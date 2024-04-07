@@ -1,25 +1,25 @@
 import { twMerge } from 'tailwind-merge'
 import { Product } from '../../services/products'
+import { FaSpinner } from 'react-icons/fa'
+import Paragraph from './Paragraph'
+import { MdErrorOutline } from 'react-icons/md'
+
+export type TableConfig = {
+  label: string
+  field?: keyof Product
+  component?: ({ data }: { data: string }) => JSX.Element
+}[]
 
 type TableProps = {
   data: Product[]
   isLoading: boolean
   error: Error | null
+  config: TableConfig
 }
 
-function Table({ data, isLoading, error }: TableProps) {
-  const config: { label: string; field: keyof Product; style?: string }[] = [
-    {
-      label: 'Product Name',
-      field: 'name',
-    },
-    { label: 'Category', field: 'category' },
-    { label: 'Color', field: 'color' },
-    { label: 'Price', field: 'price' },
-    { label: 'Quantity', field: 'stockQuantity' },
-  ]
+function Table({ data, isLoading, error, config }: TableProps) {
   return (
-    <table className="w-[95%] text-center border-x border-teal-200 mb-4">
+    <table className="w-[95%] text-center  mb-4">
       <thead>
         <tr>
           {config.map((tableHeader, index) => {
@@ -40,22 +40,37 @@ function Table({ data, isLoading, error }: TableProps) {
       <tbody>
         {!data.length && !isLoading && !error && (
           <tr>
-            <td className="text-center" colSpan={5}>
-              There is no such item
+            <td className="text-center" colSpan={6}>
+              <Paragraph className="text-xl my-4 mt-20" weight="semibold">
+                There is no such item
+              </Paragraph>
             </td>
           </tr>
         )}
         {isLoading && (
           <tr>
-            <td className="text-center" colSpan={5}>
-              Loading...
+            <td className="text-center " colSpan={6}>
+              <>
+                <FaSpinner className="animate-spin h-9 w-9 mx-auto mt-20" />
+                <Paragraph className="mt-4 text-xl" weight="semibold">
+                  Loading ...
+                </Paragraph>
+              </>
             </td>
           </tr>
         )}
         {error && (
           <tr>
-            <td className="text-center" colSpan={5}>
-              {error?.message}
+            <td className="text-center" colSpan={6}>
+              <>
+                <MdErrorOutline className="animate-bounce h-12 w-12 text-red-600 mx-auto mt-20" />
+                <Paragraph
+                  className="mt-4 text-xl text-red-600"
+                  weight="semibold"
+                >
+                  {error?.message}
+                </Paragraph>
+              </>
             </td>
           </tr>
         )}
@@ -67,16 +82,20 @@ function Table({ data, isLoading, error }: TableProps) {
                 index % 2 === 0 ? 'bg-blue-50 ' : 'bg-blue-100 bg-opacity-[0.8]'
               }
             >
-              {config.map((x, index) => {
+              {config.map((configItem, index) => {
                 return (
                   <td
                     className={twMerge(
                       'font-semibold text-blue-950 px-2 py-3  border-b-2 border-teal-200 border-dashed ',
                       [1, 2].includes(index) && 'hidden md:table-cell',
                     )}
+                    key={configItem.label}
                   >
-                    {row[x.field]}
-                    {x.field === 'price' && ' € '}
+                    {configItem.field
+                      ? `${row[configItem.field]} ${
+                          configItem.field === 'price' ? ' € ' : ''
+                        }`
+                      : configItem.component?.({ data: row.id })}
                   </td>
                 )
               })}

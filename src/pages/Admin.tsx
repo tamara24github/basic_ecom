@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Table from '../components/common/Table'
-import { Product, getAllProducts } from '../services/products'
+import { Product, deleteProduct, getAllProducts } from '../services/products'
 import TextField from '../components/common/TextField'
 import Button from '../components/common/Button'
 import { IoMdAddCircleOutline } from 'react-icons/io'
@@ -8,10 +8,58 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import Modal from '../components/common/Modal'
 import Paragraph from '../components/common/Paragraph'
 import ProductForm from '../components/ProductForm'
+import { TableConfig } from '../components/common/Table'
 
 function Admin() {
   const [showModal, setShowModal] = useState(false)
   const [searchItem, setSearchItem] = useState('')
+
+  const config: TableConfig = [
+    {
+      label: 'Product Name',
+      field: 'name',
+    },
+    { label: 'Category', field: 'category' },
+    { label: 'Color', field: 'color' },
+    { label: 'Price', field: 'price' },
+    { label: 'Quantity', field: 'stockQuantity' },
+    {
+      label: 'Actions',
+      component: ({ data }) => {
+        return (
+          <button onClick={() => deleteProductMutation.mutate(data)}>
+            delete
+          </button>
+        )
+      },
+    },
+  ]
+
+  const queryClient = useQueryClient()
+
+  const deleteProductMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: (data, productId) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (currentValue?: Product[]) => {
+          // json-server returns an empty obj in response on successfull deletion
+          const newValue = currentValue?.filter((v) => v.id !== productId)
+          return newValue
+        },
+      )
+      console.log(`Successfully deleted ${data.name}`, {
+        type: 'success',
+      })
+    },
+    onError: () => {
+      console.log(`Failed to delete product`, {
+        type: 'error',
+      })
+    },
+  })
 
   const handleOpenModal = () => {
     setShowModal(true)
@@ -77,7 +125,12 @@ function Admin() {
           />
         </div>
 
-        <Table data={data || []} isLoading={isLoading} error={error}></Table>
+        <Table
+          data={data || []}
+          isLoading={isLoading}
+          error={error}
+          config={config}
+        />
       </div>
     </>
   )
