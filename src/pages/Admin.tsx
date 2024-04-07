@@ -130,7 +130,7 @@ function Admin() {
           isLoading={isLoading}
           error={error}
           config={config}
-        ></Table>
+        />
       </div>
     </>
   )
