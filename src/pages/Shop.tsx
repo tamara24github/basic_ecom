@@ -56,7 +56,7 @@ function Shop() {
           return <ShopItem product={product} key={product.id} />
         })}
         <li className="flex items-center flex-col mt-12 lg:col-span-4 col-span-2 ">
-          {!data?.length && (
+          {!data?.length && !isLoading && !error && (
             <Paragraph className="text-xl my-4" weight="semibold">
               There is no such item
             </Paragraph>
