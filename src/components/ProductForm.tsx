@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import TextField from './common/TextField'
 import {
+  Category,
+  Color,
+  CreateProductPayload,
+  Feature,
   Product,
   categories,
   colors,
-  createProduct,
   features,
 } from '../services/products'
 import NumberInput from './common/NumberInput'
@@ -13,7 +16,6 @@ import RadioGroup from './common/RadioGroup'
 import Checkbox from './common/Checkbox'
 import Select from './common/Select'
 import Button from './common/Button'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const categoryOptions = categories.map((category) => {
   return { label: category, value: category }
@@ -28,9 +30,19 @@ const colorOptions = colors.map((color) => ({ label: color, value: color }))
 
 type Props = {
   onCloseModal?: () => void
+  onSubmit: (formValues: CreateProductPayload) => void
+  error?: string
+  isLoading?: boolean
+  data?: Product | null
 }
 
-function ProductForm({ onCloseModal }: Props) {
+function ProductForm({
+  onCloseModal,
+  onSubmit,
+  error,
+  data,
+  isLoading,
+}: Props) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
@@ -41,46 +53,18 @@ function ProductForm({ onCloseModal }: Props) {
   const [features, setFeatures] = useState('')
   const [isAvailable, setIsAvailable] = useState(false)
 
-  const queryClient = useQueryClient()
-  const { data, error, isPending, isSuccess, mutate } = useMutation({
-    mutationFn: createProduct,
-    onSuccess: (data) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          return currentValue ? [...currentValue, data] : [data]
-        },
-      )
-      setName('')
-      setDescription('')
-      setImage('')
-      setPrice(0)
-      setStockQuantity(0)
-      setCategory('')
-      setColor('')
-      setFeatures('')
-      setIsAvailable(false)
-    },
-  })
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    const values = {
+    onSubmit({
       name,
-      description,
       image,
       price,
       stockQuantity,
-      category,
-      color,
-      features: [features],
-      isAvailable,
-    }
-
-    mutate(values)
+      color: color as Color,
+      category: category as Category,
+      availability: isAvailable,
+      features: [features as Feature],
+    })
   }
 
   const handleProductName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -213,7 +197,7 @@ function ProductForm({ onCloseModal }: Props) {
         </p>
       )}
 
-      {isSuccess && (
+      {data && (
         <p className="text-green-500 text-center text-lg">
           Product "{data.name}" successfully added
         </p>
@@ -226,7 +210,7 @@ function ProductForm({ onCloseModal }: Props) {
           fontWeight="bold"
           className="mr-10 p-2 w-28 text-lg "
           type="submit"
-          disabled={isPending}
+          disabled={isLoading}
         >
           Add
         </Button>

@@ -2,11 +2,11 @@ import { jsonServerApi } from './jsonServerApi'
 
 const PATH = '/products'
 
-type Color = 'Black' | 'Gray' | 'Navy Blue' | 'Burgundy'
+export type Color = 'Black' | 'Gray' | 'Navy Blue' | 'Burgundy'
 
 export const colors: Color[] = ['Black', 'Burgundy', 'Gray', 'Navy Blue']
 
-type Category =
+export type Category =
   | 'Jackets'
   | 'Footwear'
   | 'Snowsuits'
@@ -23,7 +23,7 @@ export const categories: Category[] = [
   'Snowsuits',
 ]
 
-type Feature =
+export type Feature =
   | 'Water resistant'
   | '100% Merino wool'
   | 'Windproof'
@@ -51,9 +51,10 @@ export type Product = {
   features: Feature[]
 }
 
-export const getAllProducts = () => jsonServerApi<Product[]>(PATH)
+export const getAllProducts = (query?: string) =>
+  jsonServerApi<Product[]>(PATH, undefined, query)
 
-type CreateProductPayload = {
+export type CreateProductPayload = {
   name: string
   description?: string
   image: string
@@ -62,7 +63,7 @@ type CreateProductPayload = {
   category: string
   color: string
   features?: string[]
-  isAvailable: boolean
+  availability: boolean
 }
 
 export const createProduct = (payload: CreateProductPayload) =>

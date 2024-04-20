@@ -4,10 +4,14 @@ import { FaSpinner } from 'react-icons/fa'
 import Paragraph from './Paragraph'
 import { MdErrorOutline } from 'react-icons/md'
 
+type TableConfigComponent = {
+  data: string
+}
+
 export type TableConfig = {
   label: string
   field?: keyof Product
-  component?: ({ data }: { data: string }) => JSX.Element
+  component?: ({ data }: TableConfigComponent) => JSX.Element
 }[]
 
 type TableProps = {
@@ -59,7 +63,7 @@ function Table({ data, isLoading, error, config }: TableProps) {
             </td>
           </tr>
         )}
-        {error && (
+        {error?.message && (
           <tr>
             <td className="text-center" colSpan={6}>
               <>
@@ -68,7 +72,7 @@ function Table({ data, isLoading, error, config }: TableProps) {
                   className="mt-4 text-xl text-red-600"
                   weight="semibold"
                 >
-                  {error?.message}
+                  {error.message}
                 </Paragraph>
               </>
             </td>

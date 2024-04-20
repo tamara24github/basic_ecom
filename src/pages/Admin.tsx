@@ -1,65 +1,38 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Table from '../components/common/Table'
-import { Product, deleteProduct, getAllProducts } from '../services/products'
+import { CreateProductPayload, Product } from '../services/products'
 import TextField from '../components/common/TextField'
 import Button from '../components/common/Button'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import Modal from '../components/common/Modal'
 import Paragraph from '../components/common/Paragraph'
 import ProductForm from '../components/ProductForm'
 import { TableConfig } from '../components/common/Table'
+import useDeleteProduct from '../hooks/useDeleteProduct'
+import useGetProducts from '../hooks/useGetProducts'
+import useCreateProduct from '../hooks/useCreateProduct'
 
 function Admin() {
   const [showModal, setShowModal] = useState(false)
   const [searchItem, setSearchItem] = useState('')
+  const [filterdProductsData, setFilterdProductsData] = useState<Product[]>([])
+  const useDeleteHook = useDeleteProduct()
+  const useGetHook = useGetProducts()
+  const useCreateHook = useCreateProduct()
 
-  const config: TableConfig = [
-    {
-      label: 'Product Name',
-      field: 'name',
-    },
-    { label: 'Category', field: 'category' },
-    { label: 'Color', field: 'color' },
-    { label: 'Price', field: 'price' },
-    { label: 'Quantity', field: 'stockQuantity' },
-    {
-      label: 'Actions',
-      component: ({ data }) => {
-        return (
-          <button onClick={() => deleteProductMutation.mutate(data)}>
-            delete
-          </button>
-        )
-      },
-    },
-  ]
+  useEffect(() => {
+    useGetHook.fetchGetProducts({
+      onSuccess: (data) => setFilterdProductsData(data),
+    })
+  }, [])
 
-  const queryClient = useQueryClient()
-
-  const deleteProductMutation = useMutation({
-    mutationFn: deleteProduct,
-    onSuccess: (data, productId) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          // json-server returns an empty obj in response on successfull deletion
-          const newValue = currentValue?.filter((v) => v.id !== productId)
-          return newValue
-        },
-      )
-      console.log(`Successfully deleted ${data.name}`, {
-        type: 'success',
-      })
-    },
-    onError: () => {
-      console.log(`Failed to delete product`, {
-        type: 'error',
-      })
-    },
-  })
+  useEffect(() => {
+    setFilterdProductsData(
+      useGetHook.data.filter((product) =>
+        product.name.toLowerCase().includes(searchItem.toLowerCase()),
+      ),
+    )
+  }, [searchItem])
 
   const handleOpenModal = () => {
     setShowModal(true)
@@ -72,21 +45,52 @@ function Admin() {
     setSearchItem(e.target.value)
   }
 
-  const productsFilter = useCallback(
-    (products: Product[]) =>
-      products.filter((product) =>
-        product.name.toLowerCase().includes(searchItem.toLowerCase()),
-      ),
-    [searchItem],
-  )
+  const handleCreateProduct = (formValues: CreateProductPayload) => {
+    useCreateHook.fetchCreateProduct({
+      payload: formValues,
+      onSuccess: (data) => {
+        setFilterdProductsData((previousState) => [...previousState, data])
+      },
+    })
+  }
 
-  const productsQuery = useQuery({
-    queryKey: ['products'],
-    queryFn: () => getAllProducts(),
-    select: productsFilter,
-  })
-
-  const { error, isLoading, data } = productsQuery
+  const config: TableConfig = [
+    { label: 'Product Name', field: 'name' },
+    { label: 'Category', field: 'category' },
+    { label: 'Color', field: 'color' },
+    { label: 'Price', field: 'price' },
+    { label: 'Quantity', field: 'stockQuantity' },
+    {
+      label: 'Actions',
+      component: ({ data: dataId }) => {
+        //rowId
+        return (
+          <button
+            onClick={() =>
+              useDeleteHook.fetchDeleteProduct({
+                id: dataId,
+                onSuccess: () => {
+                  const newValue = useGetHook.data?.filter(
+                    (product) => product.id !== dataId,
+                  )
+                  useGetHook.update((previousState) => ({
+                    ...previousState,
+                    data: newValue,
+                  }))
+                  setFilterdProductsData(newValue)
+                },
+                onError: (error) => {
+                  console.log(error)
+                },
+              })
+            }
+          >
+            delete
+          </button>
+        )
+      },
+    },
+  ]
 
   return (
     <>
@@ -99,7 +103,13 @@ function Admin() {
           >
             Add Product
           </Paragraph>
-          <ProductForm onCloseModal={handleCloseModal} />
+          <ProductForm
+            onCloseModal={handleCloseModal}
+            onSubmit={handleCreateProduct}
+            error={useCreateHook.error}
+            isLoading={useCreateHook.isLoading}
+            data={useCreateHook.data}
+          />
         </Modal>
       )}
       <div className="flex flex-col items-center">
@@ -126,9 +136,9 @@ function Admin() {
         </div>
 
         <Table
-          data={data || []}
-          isLoading={isLoading}
-          error={error}
+          data={filterdProductsData || []}
+          isLoading={useGetHook.isLoading}
+          error={{ message: useGetHook.error } as Error}
           config={config}
         />
       </div>
