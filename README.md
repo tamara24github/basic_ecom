@@ -52,3 +52,7 @@ $ npm install
 $ npm run dev
 
 ```
+
+## Deployment
+
+- deployed on Netlify
