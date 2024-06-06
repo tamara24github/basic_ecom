@@ -1,11 +1,13 @@
 import { ReactNode, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type Props = {
   anchorElement: ReactNode
   children?: ReactNode
+  className?: string
 }
 
-function Popper({ anchorElement, children }: Props) {
+function Popper({ anchorElement, children, className }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleCartClick = () => {
@@ -13,13 +15,27 @@ function Popper({ anchorElement, children }: Props) {
   }
 
   return (
-    <div className="relative">
-      <div onClick={handleCartClick}>{anchorElement}</div>
+    <div>
       {isOpen && (
-        <div className="p-4 border-2 rounded-xl border-blue-950 drop-shadow-xl bg-white absolute right-8 top-8 z-10  w-[450px]">
-          {children}
-        </div>
+        <div
+          onClick={() => setIsOpen(false)}
+          className="absolute inset-0 z-[9]"
+        ></div>
       )}
+      <div className="relative">
+        <div onClick={handleCartClick}>{anchorElement}</div>
+        {isOpen && (
+          <div
+            onClick={() => setIsOpen(false)}
+            className={twMerge(
+              ' border-blue-950 drop-shadow-xl absolute  z-10 ',
+              className,
+            )}
+          >
+            {children}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

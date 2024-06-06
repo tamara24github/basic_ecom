@@ -7,7 +7,7 @@ import { MdErrorOutline } from 'react-icons/md'
 export type TableConfig = {
   label: string
   field?: keyof Product
-  component?: ({ data }: { data: string }) => JSX.Element
+  component?: ({ data }: { data: Product }) => JSX.Element
 }[]
 
 type TableProps = {
@@ -95,7 +95,7 @@ function Table({ data, isLoading, error, config }: TableProps) {
                       ? `${row[configItem.field]} ${
                           configItem.field === 'price' ? ' € ' : ''
                         }`
-                      : configItem.component?.({ data: row.id })}
+                      : configItem.component?.({ data: row })}
                   </td>
                 )
               })}

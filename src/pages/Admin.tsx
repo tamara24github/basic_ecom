@@ -7,12 +7,17 @@ import { IoMdAddCircleOutline } from 'react-icons/io'
 import { ChangeEvent, useCallback, useState } from 'react'
 import Modal from '../components/common/Modal'
 import Paragraph from '../components/common/Paragraph'
-import ProductForm from '../components/ProductForm'
+import AddProductForm from '../components/AddProductForm'
 import { TableConfig } from '../components/common/Table'
-
+import EditProductForm from '../components/EditProductForm'
+import Popper from '../components/Popper'
+import { TiThMenu } from 'react-icons/ti'
 function Admin() {
   const [showModal, setShowModal] = useState(false)
   const [searchItem, setSearchItem] = useState('')
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [productToEdit, setProductToEdit] = useState<Product | null>(null)
+  const [showOptions, setShowOptions] = useState(false)
 
   const config: TableConfig = [
     {
@@ -26,14 +31,67 @@ function Admin() {
     {
       label: 'Actions',
       component: ({ data }) => {
+        const actions = [
+          {
+            text: 'delete',
+            onClick: () => deleteProductMutation.mutate(data.id),
+          },
+          {
+            text: 'edit',
+            onClick: () => {
+              setShowEditModal(true)
+              setProductToEdit(data)
+            },
+          },
+        ]
         return (
-          <button onClick={() => deleteProductMutation.mutate(data)}>
-            delete
-          </button>
+          <>
+            <Popper
+              anchorElement={
+                <Button
+                  onClick={() => setShowOptions(!showOptions)}
+                  className="text-blue-950"
+                >
+                  <TiThMenu className="text-lg" />
+                </Button>
+              }
+            >
+              <div className=" flex flex-col w-[100px] p-1 items-strech justify-stretch bg-blue-950 rounded-xl">
+                {actions.map((action) => {
+                  return (
+                    <Button
+                      onClick={action.onClick}
+                      className="text-white my-[1px] px-[1px]"
+                      backgroundColor="blueDark"
+                      hover="blueLight"
+                    >
+                      {action.text}
+                    </Button>
+                  )
+                })}
+              </div>
+            </Popper>
+          </>
         )
       },
     },
   ]
+
+  const productsFilter = useCallback(
+    (products: Product[]) =>
+      products.filter((product) =>
+        product.name.toLowerCase().includes(searchItem.toLowerCase()),
+      ),
+    [searchItem],
+  )
+
+  const productsQuery = useQuery({
+    queryKey: ['products'],
+    queryFn: () => getAllProducts(),
+    select: productsFilter,
+  })
+
+  const { error, isLoading, data } = productsQuery
 
   const queryClient = useQueryClient()
 
@@ -45,7 +103,6 @@ function Admin() {
           queryKey: ['products'],
         },
         (currentValue?: Product[]) => {
-          // json-server returns an empty obj in response on successfull deletion
           const newValue = currentValue?.filter((v) => v.id !== productId)
           return newValue
         },
@@ -72,21 +129,9 @@ function Admin() {
     setSearchItem(e.target.value)
   }
 
-  const productsFilter = useCallback(
-    (products: Product[]) =>
-      products.filter((product) =>
-        product.name.toLowerCase().includes(searchItem.toLowerCase()),
-      ),
-    [searchItem],
-  )
-
-  const productsQuery = useQuery({
-    queryKey: ['products'],
-    queryFn: () => getAllProducts(),
-    select: productsFilter,
-  })
-
-  const { error, isLoading, data } = productsQuery
+  const handleCloseEditModal = () => {
+    setShowEditModal(false)
+  }
 
   return (
     <>
@@ -99,7 +144,22 @@ function Admin() {
           >
             Add Product
           </Paragraph>
-          <ProductForm onCloseModal={handleCloseModal} />
+          <AddProductForm onCloseModal={handleCloseModal} />
+        </Modal>
+      )}
+      {productToEdit && showEditModal && (
+        <Modal closeModal={handleCloseEditModal} className="items-center">
+          <Paragraph
+            weight="semibold"
+            color="blueDark"
+            className="text-center mb-4 text-2xl font-bold"
+          >
+            Edit Product
+          </Paragraph>
+          <EditProductForm
+            productToEdit={productToEdit}
+            onCloseModal={handleCloseEditModal}
+          />
         </Modal>
       )}
       <div className="flex flex-col items-center">

@@ -2,11 +2,11 @@ import { jsonServerApi } from './jsonServerApi'
 
 const PATH = '/products'
 
-type Color = 'Black' | 'Gray' | 'Navy Blue' | 'Burgundy'
+export type Color = 'Black' | 'Gray' | 'Navy Blue' | 'Burgundy'
 
 export const colors: Color[] = ['Black', 'Burgundy', 'Gray', 'Navy Blue']
 
-type Category =
+export type Category =
   | 'Jackets'
   | 'Footwear'
   | 'Snowsuits'
@@ -65,6 +65,8 @@ type CreateProductPayload = {
   isAvailable: boolean
 }
 
+type EditProductPayload = CreateProductPayload
+
 export const createProduct = (payload: CreateProductPayload) =>
   jsonServerApi<Product>(PATH, {
     method: 'POST',
@@ -81,3 +83,14 @@ export const deleteProduct = (id: string = '') =>
       'Content-Type': 'application/json; charset=UTF-8',
     },
   })
+
+export const editProduct =
+  (id: string = '') =>
+  (payload: EditProductPayload) =>
+    jsonServerApi<Product>(`${PATH}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(payload),
+    })

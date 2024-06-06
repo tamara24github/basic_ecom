@@ -2,7 +2,7 @@ import { getAllProducts, Product } from '../services/products'
 import { useQuery } from '@tanstack/react-query'
 import ShopItem from '../components/ShopItem'
 import Heading from '../components/common/Heading'
-import { useState, useCallback, ChangeEvent } from 'react'
+import { useState, ChangeEvent } from 'react'
 import TextField from '../components/common/TextField'
 import Paragraph from '../components/common/Paragraph'
 import { FaSpinner } from 'react-icons/fa'
@@ -15,13 +15,10 @@ function Shop() {
     setSearchItem(e.target.value)
   }
 
-  const productsFilter = useCallback(
-    (products: Product[]) =>
-      products.filter((product) =>
-        product.name.toLowerCase().includes(searchItem.toLowerCase()),
-      ),
-    [searchItem],
-  )
+  const productsFilter = (products: Product[]) =>
+    products.filter((product) =>
+      product.name.toLowerCase().includes(searchItem.toLowerCase()),
+    )
 
   const productsQuery = useQuery({
     queryKey: ['products'],
