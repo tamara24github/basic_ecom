@@ -12,6 +12,7 @@ import { TableConfig } from '../components/common/Table'
 import EditProductForm from '../components/EditProductForm'
 import Popper from '../components/Popper'
 import { TiThMenu } from 'react-icons/ti'
+
 function Admin() {
   const [showModal, setShowModal] = useState(false)
   const [searchItem, setSearchItem] = useState('')

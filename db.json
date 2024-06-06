@@ -1,40 +1,26 @@
 {
   "products": [
     {
-      "id": "1",
       "name": "Men's Winter Jacket",
-      "category": "Jackets",
       "description": "A warm and stylish jacket for men.",
-      "color": "Black",
-      "price": 89.99,
-      "availability": true,
-      "stockQuantity": 50,
       "image": "https://source.unsplash.com/featured/?jackets",
-      "features": ["Water resistant", "Windproof"]
+      "price": 89.99,
+      "stockQuantity": 49,
+      "category": "Jackets",
+      "color": "Navy Blue",
+      "features": ["Available in various sizes"],
+      "id": "1"
     },
     {
-      "id": "2",
-      "name": "Women's Snow Boots",
-      "category": "Footwear",
-      "description": "Comfortable and sturdy snow boots for women.",
-      "color": "Black",
-      "price": 79.99,
-      "availability": true,
-      "stockQuantity": 40,
-      "image": "https://source.unsplash.com/featured/?footwear",
-      "features": ["Water resistant", "Available in various sizes"]
-    },
-    {
-      "id": "3",
-      "name": "Unisex Wool Sweater",
-      "category": "Shirts",
+      "name": " Wool Sweater",
       "description": "Soft and cozy wool sweater for all genders.",
-      "color": "Gray",
-      "price": 49.99,
-      "availability": true,
-      "stockQuantity": 60,
       "image": "https://source.unsplash.com/featured/?sweaters",
-      "features": ["100% Merino wool", "Available in various sizes"]
+      "price": 49.99,
+      "stockQuantity": 60,
+      "category": "Shirts",
+      "color": "Gray",
+      "features": ["100% Merino wool,Available in various sizes"],
+      "id": "3"
     },
     {
       "id": "4",
