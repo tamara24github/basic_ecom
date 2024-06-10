@@ -1,4 +1,4 @@
-import { CartItem } from '../contexts/CartContext'
+import { CartItemType } from '../contexts/CartContext'
 import Button from './common/Button'
 import Heading from './common/Heading'
 import Paragraph from './common/Paragraph'
@@ -7,7 +7,7 @@ import { useContext } from 'react'
 import { IoMdAddCircleOutline, IoMdRemoveCircleOutline } from 'react-icons/io'
 
 type Props = {
-  cartItem: CartItem
+  cartItem: CartItemType
   index: number
 }
 

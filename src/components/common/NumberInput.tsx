@@ -32,6 +32,7 @@ function NumberInput({
         <input
           required={required}
           type="number"
+          step=".01"
           min={0}
           value={value}
           onChange={onChange}

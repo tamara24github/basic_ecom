@@ -1,5 +1,7 @@
 # basic_ecom
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6bd03e90-1dd1-4541-a1b3-0b7cf7ad0720/deploy-status)](https://app.netlify.com/sites/basic-ecom/deploys)
+
 A basic e-commerce React project.
 
 ## Technologies
@@ -20,7 +22,7 @@ A basic e-commerce React project.
 - [Tailwindcss](https://tailwindcss.com/) - Style
 - [React icons](https://react-icons.github.io/react-icons/) - Icons
 - [JSON server](https://www.npmjs.com/package/json-server) - Server
-- [ReactQuery](https://tanstack.com/query/latest) - Library for managing state
+- [ReactQuery](https://tanstack.com/query/latest) - Data synchronization library
 
 ## Installation
 
@@ -56,3 +58,5 @@ $ npm run dev
 ## Deployment
 
 - deployed on Netlify
+
+https://app.netlify.com/sites/basic-ecom/overview

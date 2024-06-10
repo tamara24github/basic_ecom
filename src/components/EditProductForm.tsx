@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import TextField from './common/TextField'
 import {
+  Color,
   Product,
   categories,
   colors,
-  createProduct,
+  editProduct,
   features,
 } from '../services/products'
 import NumberInput from './common/NumberInput'
@@ -14,6 +15,7 @@ import Checkbox from './common/Checkbox'
 import Select from './common/Select'
 import Button from './common/Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Category } from '../services/products'
 
 const categoryOptions = categories.map((category) => {
   return { label: category, value: category }
@@ -28,40 +30,36 @@ const colorOptions = colors.map((color) => ({ label: color, value: color }))
 
 type Props = {
   onCloseModal?: () => void
+  productToEdit: Product
 }
 
-function ProductForm({ onCloseModal }: Props) {
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [image, setImage] = useState('')
-  const [price, setPrice] = useState(0)
-  const [stockQuantity, setStockQuantity] = useState(0)
-  const [category, setCategory] = useState('')
-  const [color, setColor] = useState('')
-  const [features, setFeatures] = useState('')
-  const [isAvailable, setIsAvailable] = useState(false)
+function EditProductForm({ onCloseModal, productToEdit }: Props) {
+  const [name, setName] = useState(productToEdit.name)
+  const [description, setDescription] = useState(productToEdit.description)
+  const [image, setImage] = useState(productToEdit.image)
+  const [price, setPrice] = useState(productToEdit.price)
+  const [stockQuantity, setStockQuantity] = useState(
+    productToEdit.stockQuantity,
+  )
+  const [category, setCategory] = useState(productToEdit.category)
+  const [color, setColor] = useState(productToEdit.color)
+  const [features, setFeatures] = useState(`${productToEdit.features}`)
+  const [isAvailable, setIsAvailable] = useState(productToEdit.availability)
 
   const queryClient = useQueryClient()
   const { data, error, isPending, isSuccess, mutate } = useMutation({
-    mutationFn: createProduct,
+    mutationFn: editProduct(productToEdit.id),
     onSuccess: (data) => {
       queryClient.setQueriesData(
         {
           queryKey: ['products'],
         },
         (currentValue?: Product[]) => {
-          return currentValue ? [...currentValue, data] : [data]
+          return currentValue?.map((item) => {
+            return data.id === item.id ? data : item
+          })
         },
       )
-      setName('')
-      setDescription('')
-      setImage('')
-      setPrice(0)
-      setStockQuantity(0)
-      setCategory('')
-      setColor('')
-      setFeatures('')
-      setIsAvailable(false)
     },
   })
 
@@ -105,11 +103,11 @@ function ProductForm({ onCloseModal }: Props) {
   }
 
   const handleCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value)
+    setCategory(e.target.value as Category)
   }
 
   const handleColor = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setColor(e.target.value)
+    setColor(e.target.value as Color)
   }
 
   const handleFeatures = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -215,7 +213,7 @@ function ProductForm({ onCloseModal }: Props) {
 
       {isSuccess && (
         <p className="text-green-500 text-center text-lg">
-          Product "{data.name}" successfully added
+          Product "{data.name}" successfully edited
         </p>
       )}
 
@@ -228,7 +226,7 @@ function ProductForm({ onCloseModal }: Props) {
           type="submit"
           disabled={isPending}
         >
-          Add
+          Edit
         </Button>
         <Button
           fontWeight="bold"
@@ -245,4 +243,4 @@ function ProductForm({ onCloseModal }: Props) {
   )
 }
 
-export default ProductForm
+export default EditProductForm

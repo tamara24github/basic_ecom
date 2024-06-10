@@ -11,6 +11,7 @@ function Cart() {
 
   return (
     <Popper
+      className=" w-[450px] p-4 border-2 rounded-xl bg-white right-8 top-8"
       anchorElement={
         <div className="relative flex flex-col">
           <div className="bg-blue-950 w-5 text-center rounded-full font-semibold  text-white absolute right-[23px]">
