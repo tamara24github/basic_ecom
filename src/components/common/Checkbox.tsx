@@ -7,9 +7,17 @@ type Props = {
   value?: boolean
   label?: string
   required?: boolean
+  defaultChecked?: boolean
 }
 
-function Checkbox({ className, onClick, value, label, required }: Props) {
+function Checkbox({
+  className,
+  onClick,
+  value,
+  label,
+  required,
+  defaultChecked,
+}: Props) {
   return (
     <div className={twMerge(className, 'flex items-baseline mb-4 mt-2')}>
       {label && (
@@ -18,6 +26,7 @@ function Checkbox({ className, onClick, value, label, required }: Props) {
         </Label>
       )}
       <input
+        defaultChecked={defaultChecked}
         required={required}
         type="checkbox"
         className="w-5 h-5 mt-1 ml-3 rounded-md"

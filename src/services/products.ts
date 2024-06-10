@@ -67,6 +67,11 @@ type CreateProductPayload = {
 
 type EditProductPayload = CreateProductPayload
 
+type updateAvailabilityPayload = {
+  id: string
+  payload: boolean
+}
+
 export const createProduct = (payload: CreateProductPayload) =>
   jsonServerApi<Product>(PATH, {
     method: 'POST',
@@ -94,3 +99,15 @@ export const editProduct =
       },
       body: JSON.stringify(payload),
     })
+
+export const updateAvailability = ({
+  payload,
+  id,
+}: updateAvailabilityPayload) =>
+  jsonServerApi<Product>(`${PATH}/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify({ availability: payload }),
+  })

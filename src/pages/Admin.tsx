@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Table from '../components/common/Table'
-import { Product, deleteProduct, getAllProducts } from '../services/products'
+import {
+  Product,
+  deleteProduct,
+  getAllProducts,
+  updateAvailability,
+} from '../services/products'
 import TextField from '../components/common/TextField'
 import Button from '../components/common/Button'
 import { IoMdAddCircleOutline } from 'react-icons/io'
@@ -12,6 +17,8 @@ import { TableConfig } from '../components/common/Table'
 import EditProductForm from '../components/EditProductForm'
 import Popper from '../components/Popper'
 import { TiThMenu } from 'react-icons/ti'
+import Checkbox from '../components/common/Checkbox'
+
 function Admin() {
   const [showModal, setShowModal] = useState(false)
   const [searchItem, setSearchItem] = useState('')
@@ -28,6 +35,23 @@ function Admin() {
     { label: 'Color', field: 'color' },
     { label: 'Price', field: 'price' },
     { label: 'Quantity', field: 'stockQuantity' },
+    {
+      label: 'Available',
+      component: ({ data }) => {
+        return (
+          <Checkbox
+            className="justify-center"
+            defaultChecked={data.availability}
+            onClick={(e) =>
+              updateAvailabilityQuery.mutate({
+                payload: e.currentTarget.checked,
+                id: data.id,
+              })
+            }
+          />
+        )
+      },
+    },
     {
       label: 'Actions',
       component: ({ data }) => {
@@ -76,6 +100,22 @@ function Admin() {
       },
     },
   ]
+
+  const updateAvailabilityQuery = useMutation({
+    mutationFn: updateAvailability,
+    onSuccess: (data) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (currentValue?: Product[]) => {
+          return currentValue?.map((item) => {
+            return data.id === item.id ? data : item
+          })
+        },
+      )
+    },
+  })
 
   const productsFilter = useCallback(
     (products: Product[]) =>
