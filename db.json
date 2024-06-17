@@ -1,16 +1,16 @@
 {
   "products": [
     {
-      "id": "1",
       "name": "Men's Winter Jacket",
-      "category": "Jackets",
       "description": "A warm and stylish jacket for men.",
-      "color": "Black",
-      "price": 89.99,
-      "availability": true,
-      "stockQuantity": 50,
       "image": "https://source.unsplash.com/featured/?jackets",
-      "features": ["Water resistant", "Windproof"]
+      "price": 89.99,
+      "stockQuantity": 50,
+      "category": "Jackets",
+      "color": "Black",
+      "features": ["100% Merino wool"],
+      "isAvailable": true,
+      "id": "1"
     },
     {
       "id": "2",
@@ -179,18 +179,6 @@
       "stockQuantity": 75,
       "image": "https://source.unsplash.com/featured/?socks",
       "features": ["100% Merino wool", "Cozy and warm"]
-    },
-    {
-      "id": "16",
-      "name": "Kids' Fleece Mittens",
-      "category": "Accessories",
-      "description": "Soft and warm fleece mittens for kids.",
-      "color": "Burgundy",
-      "price": 11.99,
-      "availability": true,
-      "stockQuantity": 55,
-      "image": "https://source.unsplash.com/featured/?accessories",
-      "features": ["Cozy and warm", "Available in various sizes"]
     }
   ]
 }
