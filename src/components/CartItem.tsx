@@ -33,7 +33,7 @@ function CartItem({ cartItem, index }: Props) {
             Quantity:{' '}
             <IoMdRemoveCircleOutline
               className="w-[29px] h-[29px] text-red-500 mx-2 text-[19px] hover:text-red-700"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<SVGElement>) => {
                 e.stopPropagation()
                 removeCartItem(cartItem.id)
               }}
@@ -41,7 +41,7 @@ function CartItem({ cartItem, index }: Props) {
             <span className="mx-1 font-bold">{cartItem.quantity}</span>
             <IoMdAddCircleOutline
               className="w-[29px] h-[29px] text-[19px] mx-2 text-green-500 hover:text-green-700"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<SVGElement>) => {
                 e.stopPropagation()
                 addCartItem(cartItem)
               }}
@@ -54,7 +54,7 @@ function CartItem({ cartItem, index }: Props) {
           textColor="red"
           hover="red"
           className="w-20 h-8 border border-red-200 "
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
             deleteCartItem(cartItem.id)
           }}
