@@ -9,7 +9,7 @@ import {
 import TextField from '../components/common/TextField'
 import Button from '../components/common/Button'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useContext, useState } from 'react'
 import Modal from '../components/common/Modal'
 import Paragraph from '../components/common/Paragraph'
 import AddProductForm from '../components/AddProductForm'
@@ -18,6 +18,7 @@ import EditProductForm from '../components/EditProductForm'
 import Popper from '../components/Popper'
 import { TiThMenu } from 'react-icons/ti'
 import Checkbox from '../components/common/Checkbox'
+import { ToastContext } from '../contexts/ToastContext'
 
 function Admin() {
   const [showModal, setShowModal] = useState(false)
@@ -25,6 +26,8 @@ function Admin() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [productToEdit, setProductToEdit] = useState<Product | null>(null)
   const [showOptions, setShowOptions] = useState(false)
+
+  const { toast } = useContext(ToastContext)
 
   const config: TableConfig = [
     {
@@ -147,14 +150,10 @@ function Admin() {
           return newValue
         },
       )
-      console.log(`Successfully deleted ${data.name}`, {
-        type: 'success',
-      })
+      toast({ message: `Successfully deleted ${data.name}`, type: 'success' })
     },
     onError: () => {
-      console.log(`Failed to delete product`, {
-        type: 'error',
-      })
+      toast({ message: `Failed to delete product`, type: 'error' })
     },
   })
 
