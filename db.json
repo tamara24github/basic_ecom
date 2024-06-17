@@ -1,16 +1,16 @@
 {
   "products": [
     {
+      "id": "1",
       "name": "Men's Winter Jacket",
-      "description": "A warm and stylish jacket for men.",
-      "image": "https://source.unsplash.com/featured/?jackets",
-      "price": 89.99,
-      "stockQuantity": 50,
       "category": "Jackets",
+      "description": "A warm and stylish jacket for men.",
       "color": "Black",
-      "features": ["100% Merino wool"],
-      "isAvailable": true,
-      "id": "1"
+      "price": 89.99,
+      "availability": true,
+      "stockQuantity": 50,
+      "image": "/images/Men's Winter Jacket.webp",
+      "features": ["Water resistant", "Windproof"]
     },
     {
       "id": "2",
@@ -21,7 +21,7 @@
       "price": 79.99,
       "availability": true,
       "stockQuantity": 40,
-      "image": "https://source.unsplash.com/featured/?footwear",
+      "image": "images/Women's Snow Boots.jpg",
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
@@ -33,7 +33,7 @@
       "price": 49.99,
       "availability": true,
       "stockQuantity": 60,
-      "image": "https://source.unsplash.com/featured/?sweaters",
+      "image": "images/Unisex Wool Sweater.jpg",
       "features": ["100% Merino wool", "Available in various sizes"]
     },
     {
@@ -45,7 +45,7 @@
       "price": 69.99,
       "availability": true,
       "stockQuantity": 30,
-      "image": "https://source.unsplash.com/featured/?snowsuits",
+      "image": "images/Kids' Snowsuit.jpg",
       "features": ["Water resistant", "Windproof"]
     },
     {
@@ -57,7 +57,7 @@
       "price": 14.99,
       "availability": true,
       "stockQuantity": 80,
-      "image": "https://source.unsplash.com/featured/?accessories",
+      "image": "images/Fleece Neck Warmer.webp",
       "features": ["100% Merino wool", "Cozy and warm"]
     },
     {
@@ -69,7 +69,7 @@
       "price": 39.99,
       "availability": true,
       "stockQuantity": 45,
-      "image": "https://source.unsplash.com/featured/?underwear",
+      "image": "images/Men's Thermal Underwear Set.jpg",
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
@@ -81,7 +81,7 @@
       "price": 24.99,
       "availability": true,
       "stockQuantity": 55,
-      "image": "https://source.unsplash.com/featured/?accessories",
+      "image": "images/Women's Insulated Gloves.webp",
       "features": ["Cozy and warm", "Available in various sizes"]
     },
     {
@@ -93,7 +93,7 @@
       "price": 59.99,
       "availability": true,
       "stockQuantity": 35,
-      "image": "https://source.unsplash.com/featured/?vests",
+      "image": "images/Men's Quilted Vest.webp",
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
@@ -105,7 +105,7 @@
       "price": 19.99,
       "availability": true,
       "stockQuantity": 70,
-      "image": "https://source.unsplash.com/featured/?scarves",
+      "image": "images/Women's Cable-Knit Scarf.webp",
       "features": ["100% Merino wool", "Cozy and warm"]
     },
     {
@@ -117,7 +117,7 @@
       "price": 12.99,
       "availability": true,
       "stockQuantity": 60,
-      "image": "https://source.unsplash.com/featured/?hats",
+      "image": "images/Unisex Beanie Hat.jpg",
       "features": ["100% Merino wool", "Cozy and warm"]
     },
     {
@@ -129,7 +129,7 @@
       "price": 129.99,
       "availability": true,
       "stockQuantity": 25,
-      "image": "https://source.unsplash.com/featured/?jackets",
+      "image": "images/Men's Heavyweight Parka.jpg",
       "features": ["Windproof", "Available in various sizes"]
     },
     {
@@ -141,7 +141,7 @@
       "price": 29.99,
       "availability": true,
       "stockQuantity": 40,
-      "image": "https://source.unsplash.com/featured/?bottoms",
+      "image": "images/Women's Thermal Leggings.jpg",
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
@@ -153,7 +153,7 @@
       "price": 34.99,
       "availability": true,
       "stockQuantity": 45,
-      "image": "https://source.unsplash.com/featured/?shirts",
+      "image": "images/Men's Flannel Shirt.jpg",
       "features": ["Cozy and warm", "Available in various sizes"]
     },
     {
@@ -165,7 +165,7 @@
       "price": 79.99,
       "availability": true,
       "stockQuantity": 30,
-      "image": "https://source.unsplash.com/featured/jackets",
+      "image": "images/Women's Puffer Jacket.webp",
       "features": ["Water resistant", "Available in various sizes"]
     },
     {
@@ -177,8 +177,20 @@
       "price": 9.99,
       "availability": true,
       "stockQuantity": 75,
-      "image": "https://source.unsplash.com/featured/?socks",
+      "image": "images/Unisex Wool Blend Socks.webp",
       "features": ["100% Merino wool", "Cozy and warm"]
+    },
+    {
+      "id": "16",
+      "name": "Kids' Fleece Mittens",
+      "category": "Accessories",
+      "description": "Soft and warm fleece mittens for kids.",
+      "color": "Burgundy",
+      "price": 11.99,
+      "availability": true,
+      "stockQuantity": 55,
+      "image": "images/Kids' Fleece Mittens.jpg",
+      "features": ["Cozy and warm", "Available in various sizes"]
     }
   ]
 }
