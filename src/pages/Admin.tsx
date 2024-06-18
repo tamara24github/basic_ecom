@@ -117,6 +117,16 @@ function Admin() {
           })
         },
       )
+      toast({
+        message: `Successfully edited a product.`,
+        type: 'success',
+      })
+    },
+    onError: () => {
+      toast({
+        message: `Failed to edit a product`,
+        type: 'error',
+      })
     },
   })
 
@@ -140,7 +150,7 @@ function Admin() {
 
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
-    onSuccess: (data, productId) => {
+    onSuccess: (_, productId) => {
       queryClient.setQueriesData(
         {
           queryKey: ['products'],
@@ -150,7 +160,11 @@ function Admin() {
           return newValue
         },
       )
-      toast({ message: `Successfully deleted ${data.name}`, type: 'success' })
+
+      toast({
+        message: `Successfully deleted product.`,
+        type: 'success',
+      })
     },
     onError: () => {
       toast({ message: `Failed to delete product`, type: 'error' })
