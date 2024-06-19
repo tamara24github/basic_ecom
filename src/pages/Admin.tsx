@@ -45,7 +45,7 @@ function Admin() {
           <Checkbox
             className="justify-center"
             defaultChecked={data.availability}
-            onClick={(e) =>
+            onChange={(e) =>
               updateAvailabilityQuery.mutate({
                 payload: e.currentTarget.checked,
                 id: data.id,
@@ -84,9 +84,10 @@ function Admin() {
               }
             >
               <div className=" flex flex-col w-[100px] p-1 items-strech justify-stretch bg-blue-950 rounded-xl">
-                {actions.map((action) => {
+                {actions.map((action, i) => {
                   return (
                     <Button
+                      key={i}
                       onClick={action.onClick}
                       className="text-white my-[1px] px-[1px]"
                       backgroundColor="blueDark"

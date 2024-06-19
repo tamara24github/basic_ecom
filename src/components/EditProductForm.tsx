@@ -199,8 +199,8 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
       </div>
       <div>
         <Checkbox
-          value={isAvailable}
-          onClick={handleCheckbox}
+          // value={isAvailable}
+          onChange={handleCheckbox}
           label="Is Available"
         />
       </div>
