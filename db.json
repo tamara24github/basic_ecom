@@ -7,7 +7,7 @@
       "description": "A warm and stylish jacket for men.",
       "color": "Black",
       "price": 89.99,
-      "availability": true,
+      "availability": false,
       "stockQuantity": 50,
       "image": "/images/Men's Winter Jacket.webp",
       "features": ["Water resistant", "Windproof"]
