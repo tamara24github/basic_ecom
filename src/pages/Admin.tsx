@@ -9,12 +9,12 @@ import {
 import TextField from '../components/common/TextField'
 import Button from '../components/common/Button'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { ChangeEvent, useCallback, useContext, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import Modal from '../components/common/Modal'
 import Paragraph from '../components/common/Paragraph'
-import AddProductForm from '../components/AddProductForm'
+import AddProductForm from '../components/forms/AddProductForm'
 import { TableConfig } from '../components/common/Table'
-import EditProductForm from '../components/EditProductForm'
+import EditProductForm from '../components/forms/EditProductForm'
 import Popper from '../components/Popper'
 import { TiThMenu } from 'react-icons/ti'
 import Checkbox from '../components/common/Checkbox'
@@ -131,18 +131,9 @@ function Admin() {
     },
   })
 
-  const productsFilter = useCallback(
-    (products: Product[]) =>
-      products.filter((product) =>
-        product.name.toLowerCase().includes(searchItem.toLowerCase()),
-      ),
-    [searchItem],
-  )
-
   const productsQuery = useQuery({
-    queryKey: ['products'],
-    queryFn: () => getAllProducts(),
-    select: productsFilter,
+    queryKey: ['products', searchItem],
+    queryFn: () => getAllProducts(`?name_like=${searchItem}`),
   })
 
   const { error, isLoading, data } = productsQuery
