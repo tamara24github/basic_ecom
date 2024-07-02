@@ -23,6 +23,8 @@ A basic e-commerce React project.
 - [React icons](https://react-icons.github.io/react-icons/) - Icons
 - [JSON server](https://www.npmjs.com/package/json-server) - Server
 - [ReactQuery](https://tanstack.com/query/latest) - Data synchronization library
+- [React Hook Form](https://www.npmjs.com/package/react-hook-form) - Form handling
+- [Yup](https://www.npmjs.com/package/yup) - Form validation
 
 ## Installation
 
