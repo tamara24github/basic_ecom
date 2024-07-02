@@ -23,21 +23,6 @@ export const categories: Category[] = [
   'Snowsuits',
 ]
 
-type Feature =
-  | 'Water resistant'
-  | '100% Merino wool'
-  | 'Windproof'
-  | 'Available in various sizes'
-  | 'Cozy and warm'
-
-export const features: Feature[] = [
-  '100% Merino wool',
-  'Available in various sizes',
-  'Cozy and warm',
-  'Water resistant',
-  'Windproof',
-]
-
 export type Product = {
   id: string
   name: string
@@ -48,12 +33,12 @@ export type Product = {
   availability: boolean
   stockQuantity: number
   image: string
-  features: Feature[]
 }
 
-export const getAllProducts = () => jsonServerApi<Product[]>(PATH)
+export const getAllProducts = (query?: string) =>
+  jsonServerApi<Product[]>(PATH, undefined, query)
 
-type CreateProductPayload = {
+export type CreateProductPayload = {
   name: string
   description?: string
   image: string
@@ -61,8 +46,7 @@ type CreateProductPayload = {
   stockQuantity: number
   category: string
   color: string
-  features?: string[]
-  isAvailable: boolean
+  availability: boolean
 }
 
 type EditProductPayload = CreateProductPayload

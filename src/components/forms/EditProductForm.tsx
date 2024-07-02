@@ -1,88 +1,80 @@
-import TextField from './common/TextField'
+import TextField from '../common/TextField'
 import {
+  CreateProductPayload,
   Product,
   categories,
   colors,
-  createProduct,
-  features,
-} from '../services/products'
-import NumberInput from './common/NumberInput'
-import TextArea from './common/TextArea'
-import RadioGroup from './common/RadioGroup'
-import Checkbox from './common/Checkbox'
-import Select from './common/Select'
-import Button from './common/Button'
+  editProduct,
+} from '../../services/products'
+import NumberInput from '../common/NumberInput'
+import TextArea from '../common/TextArea'
+import RadioGroup from '../common/RadioGroup'
+import Checkbox from '../common/Checkbox'
+import Select from '../common/Select'
+import Button from '../common/Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
-// import * as yup from 'yup'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const requiredErrorMessage = 'This field is required'
-
-const defaultFormValues = {
-  name: '',
-  description: '',
-  image: '',
-  price: 0,
-  stockQuantity: 0,
-  category: '',
-  color: '',
-  features: '',
-  isAvailable: false,
-}
-
-type Inputs = typeof defaultFormValues
 
 const categoryOptions = categories.map((category) => {
   return { label: category, value: category }
 })
 
-const featureOptions = features.map((feature) => ({
-  label: feature,
-  value: feature,
-}))
+const schema = yup.object({
+  name: yup.string().required(),
+  description: yup.string(),
+  image: yup.string().required(),
+  price: yup.number().required().min(0.01),
+  stockQuantity: yup.number().required().min(1),
+  category: yup.string().required(),
+  color: yup.string().required(),
+  availability: yup.boolean().required(),
+})
+
+type FormValues = CreateProductPayload
 
 const colorOptions = colors.map((color) => ({ label: color, value: color }))
 
 type Props = {
   onCloseModal?: () => void
+  productToEdit: Product
 }
 
-function AddProductForm({ onCloseModal }: Props) {
+function EditProductForm({ onCloseModal, productToEdit }: Props) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-    // reset,
-  } = useForm<Inputs>({
-    defaultValues: defaultFormValues,
+    reset,
+  } = useForm<FormValues>({
+    defaultValues: productToEdit,
+    resolver: yupResolver(schema),
   })
 
   const queryClient = useQueryClient()
   const { data, error, isPending, isSuccess, mutate } = useMutation({
-    mutationFn: createProduct,
+    mutationFn: editProduct(productToEdit.id),
     onSuccess: (data) => {
       queryClient.setQueriesData(
         {
           queryKey: ['products'],
         },
         (currentValue?: Product[]) => {
-          return currentValue ? [...currentValue, data] : [data]
+          return currentValue?.map((item) => {
+            return data.id === item.id ? data : item
+          })
         },
       )
     },
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const values = {
-      ...data,
-      features: [data.features],
-    }
-
-    mutate(values)
-    console.log(data)
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    mutate(data)
+    reset(productToEdit)
   }
-  console.log(watch())
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
@@ -124,24 +116,14 @@ function AddProductForm({ onCloseModal }: Props) {
         error={errors.image?.message}
       />
 
-      <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
-        <Select
-          className="md:w-[42%] w-full"
-          label="Color"
-          options={colorOptions}
-          required
-          {...register('color', { required: requiredErrorMessage })}
-          error={errors.color?.message}
-        />
-        <Select
-          className="md:w-[42%] w-full"
-          label="Features"
-          options={featureOptions}
-          required
-          {...register('features', { required: requiredErrorMessage })}
-          error={errors.features?.message}
-        />
-      </div>
+      <Select
+        className="mb-6"
+        label="Color"
+        options={colorOptions}
+        required
+        {...register('color', { required: requiredErrorMessage })}
+        error={errors.color?.message}
+      />
 
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
         <NumberInput
@@ -157,6 +139,7 @@ function AddProductForm({ onCloseModal }: Props) {
         <NumberInput
           className="md:w-[42%] w-full"
           label="Stock Quantity"
+          step="1"
           placeholder="0"
           required
           {...register('stockQuantity', { required: requiredErrorMessage })}
@@ -166,8 +149,8 @@ function AddProductForm({ onCloseModal }: Props) {
       <div>
         <Checkbox
           label="Is Available"
-          {...register('isAvailable')}
-          error={errors.isAvailable?.message}
+          {...register('availability')}
+          error={errors.availability?.message}
         />
       </div>
 
@@ -179,7 +162,7 @@ function AddProductForm({ onCloseModal }: Props) {
 
       {isSuccess && (
         <p className="text-green-500 text-center text-lg">
-          Product "{data.name}" successfully added
+          Product "{data.name}" successfully edited
         </p>
       )}
 
@@ -192,14 +175,13 @@ function AddProductForm({ onCloseModal }: Props) {
           type="submit"
           disabled={isPending}
         >
-          Add
+          Edit
         </Button>
         <Button
           fontWeight="bold"
           backgroundColor="transparent"
           textColor="red"
           hover="red"
-          type="button"
           onClick={onCloseModal}
           className="p-2 w-28 text-lg border border-red-600 opacity-[0.9]"
         >
@@ -210,4 +192,4 @@ function AddProductForm({ onCloseModal }: Props) {
   )
 }
 
-export default AddProductForm
+export default EditProductForm

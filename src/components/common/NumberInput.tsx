@@ -11,6 +11,7 @@ type Props = {
   withIcon?: boolean
   error?: string
   required?: boolean
+  step?: string
 }
 
 const NumberInput = forwardRef(

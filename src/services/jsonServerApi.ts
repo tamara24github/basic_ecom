@@ -5,9 +5,10 @@ const BASE_URL = import.meta.env.PROD
 export const jsonServerApi = async <ApiResponse>(
   path: string,
   init?: RequestInit,
+  query: string = '',
 ): Promise<ApiResponse> => {
   try {
-    const result = await fetch(`${BASE_URL}${path}`, init)
+    const result = await fetch(`${BASE_URL}${path}${query}`, init)
     const data = await result.json()
     return data
   } catch (error) {
