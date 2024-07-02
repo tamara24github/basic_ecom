@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import TextField from './common/TextField'
 import {
-  Color,
   Product,
   categories,
   colors,
@@ -15,7 +13,24 @@ import Checkbox from './common/Checkbox'
 import Select from './common/Select'
 import Button from './common/Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Category } from '../services/products'
+import { SubmitHandler, useForm } from 'react-hook-form'
+// import * as yup from 'yup'
+
+const requiredErrorMessage = 'This field is required'
+
+const defaultFormValues = {
+  name: '',
+  description: '',
+  image: '',
+  price: 0,
+  stockQuantity: 0,
+  category: '',
+  color: '',
+  features: '',
+  isAvailable: false,
+}
+
+type Inputs = typeof defaultFormValues
 
 const categoryOptions = categories.map((category) => {
   return { label: category, value: category }
@@ -34,17 +49,15 @@ type Props = {
 }
 
 function EditProductForm({ onCloseModal, productToEdit }: Props) {
-  const [name, setName] = useState(productToEdit.name)
-  const [description, setDescription] = useState(productToEdit.description)
-  const [image, setImage] = useState(productToEdit.image)
-  const [price, setPrice] = useState(productToEdit.price)
-  const [stockQuantity, setStockQuantity] = useState(
-    productToEdit.stockQuantity,
-  )
-  const [category, setCategory] = useState(productToEdit.category)
-  const [color, setColor] = useState(productToEdit.color)
-  const [features, setFeatures] = useState(`${productToEdit.features}`)
-  const [isAvailable, setIsAvailable] = useState(productToEdit.availability)
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    // reset,
+  } = useForm<Inputs>({
+    defaultValues: defaultFormValues,
+  })
 
   const queryClient = useQueryClient()
   const { data, error, isPending, isSuccess, mutate } = useMutation({
@@ -63,145 +76,101 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
     },
   })
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     const values = {
-      name,
-      description,
-      image,
-      price,
-      stockQuantity,
-      category,
-      color,
-      features: [features],
-      isAvailable,
+      ...data,
+      features: [data.features],
     }
 
     mutate(values)
+    console.log(data)
   }
-
-  const handleProductName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
-
-  const handleProductDescription = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setDescription(e.target.value)
-  }
-
-  const handleProductImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImage(e.target.value)
-  }
-
-  const handleProductPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPrice(Number(e.target.value))
-  }
-  const handleStockQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStockQuantity(Number(e.target.value))
-  }
-
-  const handleCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value as Category)
-  }
-
-  const handleColor = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setColor(e.target.value as Color)
-  }
-
-  const handleFeatures = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFeatures(e.target.value)
-  }
-
-  const handleCheckbox = () => {
-    setIsAvailable(!isAvailable)
-  }
+  console.log(watch())
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       <TextField
         className="mb-6"
-        label="Name"
-        value={name}
-        onChange={handleProductName}
-        placeholder="Product Name"
         required
+        label="Name"
+        placeholder="Product Name"
+        {...register('name', { required: requiredErrorMessage })}
+        error={errors.name?.message}
       />
 
       <div className="flex flex-col md:flex-row justify-between mb-6">
         <RadioGroup
-          required
           className="md:w-[35%] w-full"
           label="Category"
           options={categoryOptions}
-          value={category}
-          name="flexRadioDefault"
-          onChange={handleCategory}
+          required
+          {...register('category')}
+          error={errors.category?.message}
         />
 
         <TextArea
           className="md:w-[62%] w-full"
           label="Product Description"
           rows={6}
-          onChange={handleProductDescription}
-          value={description}
           placeholder="Product description"
+          {...register('description')}
+          error={errors.description?.message}
         />
       </div>
 
       <TextField
-        label="Image"
-        required
-        value={image}
-        onChange={handleProductImage}
-        placeholder="Image URL"
         className="mb-6"
+        label="Image"
+        placeholder="Image URL"
+        required
+        {...register('image', { required: requiredErrorMessage })}
+        error={errors.image?.message}
       />
 
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
         <Select
-          required
           className="md:w-[42%] w-full"
-          value={color}
           label="Color"
-          onChange={handleColor}
           options={colorOptions}
+          required
+          {...register('color', { required: requiredErrorMessage })}
+          error={errors.color?.message}
         />
         <Select
           className="md:w-[42%] w-full"
-          value={features}
           label="Features"
-          onChange={handleFeatures}
           options={featureOptions}
+          required
+          {...register('features', { required: requiredErrorMessage })}
+          error={errors.features?.message}
         />
       </div>
 
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
         <NumberInput
+          className="md:w-[42%] w-full"
+          label="Product Price"
+          withIcon
           placeholder="0"
           required
-          className="md:w-[42%] w-full"
-          withIcon
-          value={price}
-          onChange={handleProductPrice}
-          label="Product Price"
+          {...register('price', { required: requiredErrorMessage })}
+          error={errors.price?.message}
         />
 
         <NumberInput
+          className="md:w-[42%] w-full"
+          label="Stock Quantity"
           placeholder="0"
           required
-          className="md:w-[42%] w-full"
-          value={stockQuantity}
-          onChange={handleStockQuantity}
-          label="Stock Quantity"
+          {...register('stockQuantity', { required: requiredErrorMessage })}
+          error={errors.stockQuantity?.message}
         />
       </div>
       <div>
         <Checkbox
-          value={isAvailable}
-          onClick={handleCheckbox}
           label="Is Available"
+          {...register('isAvailable')}
+          error={errors.isAvailable?.message}
         />
       </div>
 
