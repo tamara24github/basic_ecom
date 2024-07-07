@@ -38,6 +38,9 @@ export type Product = {
 export const getAllProducts = (query?: string) =>
   jsonServerApi<Product[]>(PATH, undefined, query)
 
+export const getAllProductsPaginated = (query?: string) =>
+  jsonServerApi<{ lastPage: number; data: Product[] }>(PATH, undefined, query)
+
 export type CreateProductPayload = {
   name: string
   description?: string

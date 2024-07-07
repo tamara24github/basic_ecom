@@ -8,10 +8,24 @@ export const jsonServerApi = async <ApiResponse>(
   query: string = '',
 ): Promise<ApiResponse> => {
   try {
-    const result = await fetch(`${BASE_URL}${path}${query}`, init)
-    const data = await result.json()
-    return data
+    const response = await fetch(`${BASE_URL}${path}${query}`, init)
+    const data = await response.json()
+    const lastPage = getLastPageFromResponse(response)
+    return lastPage ? { lastPage, data } : data
   } catch (error) {
     return Promise.reject(error)
   }
+}
+
+const getLastPageFromResponse = (response: Response) => {
+  const linkHeader = response.headers.get('Link')
+  if (linkHeader === '') return 1
+  if (!linkHeader) return
+  const lastLinkHeader = linkHeader.split(',').find((s) => s.includes('last'))
+  if (!lastLinkHeader) return
+  const lastLinkHeaderUrl = lastLinkHeader.split(';')[0]
+  const lastLinkHeaderUrlParams = new URLSearchParams(lastLinkHeaderUrl)
+  const lastPage = lastLinkHeaderUrlParams.get('_page')
+  if (!lastPage) return
+  return Number(lastPage)
 }
