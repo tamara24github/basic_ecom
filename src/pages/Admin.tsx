@@ -3,7 +3,7 @@ import Table from '../components/common/Table'
 import {
   Product,
   deleteProduct,
-  getAllProducts,
+  getAllProductsPaginated,
   updateAvailability,
 } from '../services/products'
 import TextField from '../components/common/TextField'
@@ -26,6 +26,8 @@ function Admin() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [productToEdit, setProductToEdit] = useState<Product | null>(null)
   const [showOptions, setShowOptions] = useState(false)
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(5)
 
   const { toast } = useContext(ToastContext)
 
@@ -132,8 +134,11 @@ function Admin() {
   })
 
   const productsQuery = useQuery({
-    queryKey: ['products', searchItem],
-    queryFn: () => getAllProducts(`?name_like=${searchItem}`),
+    queryKey: ['products', searchItem, page, limit],
+    queryFn: () =>
+      getAllProductsPaginated(
+        `?name_like=${searchItem}&_page=${page}&_limit=${limit}`,
+      ),
   })
 
   const { error, isLoading, data } = productsQuery
@@ -231,10 +236,15 @@ function Admin() {
         </div>
 
         <Table
-          data={data || []}
+          data={data?.data || []}
           isLoading={isLoading}
           error={error}
           config={config}
+          page={page}
+          limit={limit}
+          lastPage={data?.lastPage}
+          setPage={setPage}
+          setLimit={setLimit}
         />
       </div>
     </>
