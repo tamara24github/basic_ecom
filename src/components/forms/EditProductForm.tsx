@@ -123,6 +123,7 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
         required
         {...register('color', { required: requiredErrorMessage })}
         error={errors.color?.message}
+        classNameSelect="p-2"
       />
 
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">

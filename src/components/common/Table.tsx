@@ -6,8 +6,12 @@ import { MdErrorOutline } from 'react-icons/md'
 import Button from './Button'
 import Select from './Select'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
-
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
+import {
+  FaAngleLeft,
+  FaAngleRight,
+  FaAnglesLeft,
+  FaAnglesRight,
+} from 'react-icons/fa6'
 
 const limitOptions = ['5', '10', '15', '20'].map((value) => ({
   label: value,
@@ -80,14 +84,14 @@ function Table({
 
   return (
     <>
-      <table className="w-[95%] text-center  mb-4">
+      <table className="w-[91%] text-center mb-4">
         <thead>
           <tr>
             {config.map((tableHeader, index) => {
               return (
                 <td
                   className={twMerge(
-                    'py-3 px-9 bg-blue-950 text-white font-bold text-lg border-2  border-teal-100 rounded-b-[11px] drop-shadow-md ',
+                    'py-2 px-8 bg-blue-950 text-white font-bold text-lg border-2  border-teal-100 rounded-b-[11px] drop-shadow-md ',
                     [1, 2].includes(index) && 'hidden md:table-cell',
                   )}
                   key={tableHeader.label}
@@ -101,7 +105,7 @@ function Table({
         <tbody>
           {!data.length && !isLoading && !error && (
             <tr>
-              <td className="text-center" colSpan={6}>
+              <td className="text-center" colSpan={8}>
                 <Paragraph className="text-xl my-4 mt-20" weight="semibold">
                   There is no such item
                 </Paragraph>
@@ -110,7 +114,7 @@ function Table({
           )}
           {isLoading && (
             <tr>
-              <td className="text-center " colSpan={6}>
+              <td className="text-center " colSpan={8}>
                 <>
                   <FaSpinner className="animate-spin h-9 w-9 mx-auto mt-20" />
                   <Paragraph className="mt-4 text-xl" weight="semibold">
@@ -122,7 +126,7 @@ function Table({
           )}
           {error && (
             <tr>
-              <td className="text-center" colSpan={6}>
+              <td className="text-center" colSpan={8}>
                 <>
                   <MdErrorOutline className="animate-bounce h-12 w-12 text-red-600 mx-auto mt-20" />
                   <Paragraph
@@ -149,7 +153,7 @@ function Table({
                   return (
                     <td
                       className={twMerge(
-                        'font-semibold text-blue-950 px-2 py-3  border-b-2 border-teal-200 border-dashed ',
+                        'font-semibold text-blue-950 px-2 py-2 border-b-2 border-teal-200 border-dashed ',
                         [1, 2].includes(index) && 'hidden md:table-cell',
                       )}
                       key={configItem.label}
@@ -168,52 +172,55 @@ function Table({
         </tbody>
       </table>
 
-      <div className="flex gap-4 justify-center items-center my-3">
-        <Button
-          onClick={handlePaginateFirst}
-          backgroundColor="blueLight"
-          hover="blueDark"
-          fontWeight="bold"
-          className="px-4"
-        >
-          {'<< first'}
-        </Button>
-        <Button
-          onClick={handlePaginatePrevious}
-          backgroundColor="blueLight"
-          hover="blueDark"
-          fontWeight="semibold"
-          className="px-6 justify-center flex items-center"
-        >
-          <FaAngleLeft className="mr-1" />
-          Prev
-        </Button>
+      <div className="flex md:flex-row flex-col md:w-[85%] md:justify-end justify-center mb-3 mt-6">
+        <div className="flex gap-4 md:mr-8 md:mb-0 mb-4 justify-center">
+          <Button
+            onClick={handlePaginateFirst}
+            backgroundColor="blueLight"
+            hover="blueDark"
+            fontWeight="bold"
+            className="px-4 justify-center flex items-center"
+          >
+            <FaAnglesLeft className="mr-1" />
+            First
+          </Button>
+          <Button
+            onClick={handlePaginatePrevious}
+            backgroundColor="blueLight"
+            hover="blueDark"
+            fontWeight="semibold"
+            className="px-6 justify-center flex items-center"
+          >
+            <FaAngleLeft className="mr-1" />
+            Prev
+          </Button>
 
-        <Paragraph weight="semibold" color="blueDark">
-          Page {page} of {lastPage}
-        </Paragraph>
+          <Paragraph weight="semibold" color="blueDark">
+            Page {page} of {lastPage}
+          </Paragraph>
 
-        <Button
-          onClick={handlePaginateNext}
-          backgroundColor="blueLight"
-          hover="blueDark"
-          fontWeight="semibold"
-          className="px-6 justify-center flex items-center"
-        >
-          Next
-          <FaAngleRight className="ml-1" />
-        </Button>
-        <Button
-          onClick={handlePaginateLast}
-          backgroundColor="blueLight"
-          hover="blueDark"
-          fontWeight="bold"
-          className="px-4"
-        >
-          {'last >>'}
-        </Button>
-
-        <div className="flex gap-3 items-center absolute right-11 ">
+          <Button
+            onClick={handlePaginateNext}
+            backgroundColor="blueLight"
+            hover="blueDark"
+            fontWeight="semibold"
+            className="px-6 justify-center flex items-center"
+          >
+            Next
+            <FaAngleRight className="ml-1" />
+          </Button>
+          <Button
+            onClick={handlePaginateLast}
+            backgroundColor="blueLight"
+            hover="blueDark"
+            fontWeight="bold"
+            className="px-4 justify-center flex items-center"
+          >
+            Last
+            <FaAnglesRight className="ml-1" />
+          </Button>
+        </div>
+        <div className="flex gap-3 items-center justify-center">
           <Paragraph weight="semibold" color="blueDark">
             Go to page:
           </Paragraph>
@@ -224,7 +231,7 @@ function Table({
           />
 
           <Paragraph weight="semibold" color="blueDark" className="ml-4">
-            Show:
+            Number of items:
           </Paragraph>
           <Select
             onChange={handleSetLimit}

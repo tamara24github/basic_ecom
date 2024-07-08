@@ -213,13 +213,13 @@ function Admin() {
         </Modal>
       )}
       <div className="flex flex-col items-center">
-        <div className="flex my-12">
+        <div className="flex my-10">
           <Button
             backgroundColor="blueLight"
             hover="blueDark"
             rounded="xl2"
             fontWeight="bold"
-            className="mr-16  px-6 py-2 text-lg flex items-center"
+            className="mr-16 px-6 py-2 text-lg flex items-center"
             onClick={handleOpenModal}
           >
             <IoMdAddCircleOutline className="mr-2 w-[24px] h-[24px]" />
