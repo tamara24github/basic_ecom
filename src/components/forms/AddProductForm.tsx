@@ -1,7 +1,6 @@
 import TextField from '../common/TextField'
 import {
   CreateProductPayload,
-  Product,
   categories,
   colors,
   createProduct,
@@ -12,7 +11,7 @@ import RadioGroup from '../common/RadioGroup'
 import Checkbox from '../common/Checkbox'
 import Select from '../common/Select'
 import Button from '../common/Button'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -64,19 +63,8 @@ function AddProductForm({ onCloseModal }: Props) {
     resolver: yupResolver(schema),
   })
 
-  const queryClient = useQueryClient()
   const { data, error, isPending, isSuccess, mutate } = useMutation({
     mutationFn: createProduct,
-    onSuccess: (data) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          return currentValue ? [...currentValue, data] : [data]
-        },
-      )
-    },
   })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
