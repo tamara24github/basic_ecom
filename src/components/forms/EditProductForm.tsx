@@ -12,7 +12,7 @@ import RadioGroup from '../common/RadioGroup'
 import Checkbox from '../common/Checkbox'
 import Select from '../common/Select'
 import Button from '../common/Button'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -48,19 +48,23 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<FormValues>({
     defaultValues: productToEdit,
     resolver: yupResolver(schema),
   })
+  const queryClient = useQueryClient()
 
   const { data, error, isPending, isSuccess, mutate } = useMutation({
     mutationFn: editProduct(productToEdit.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['products'],
+      })
+    },
   })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     mutate(data)
-    reset(productToEdit)
   }
 
   return (

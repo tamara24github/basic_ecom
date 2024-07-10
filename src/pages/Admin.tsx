@@ -109,17 +109,10 @@ function Admin() {
 
   const updateAvailabilityQuery = useMutation({
     mutationFn: updateAvailability,
-    onSuccess: (data) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          return currentValue?.map((item) => {
-            return data.id === item.id ? data : item
-          })
-        },
-      )
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['products'],
+      })
       toast({
         message: `Successfully edited a product.`,
         type: 'success',
@@ -147,16 +140,10 @@ function Admin() {
 
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
-    onSuccess: (_, productId) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          const newValue = currentValue?.filter((v) => v.id !== productId)
-          return newValue
-        },
-      )
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['products'],
+      })
 
       toast({
         message: `Successfully deleted product.`,
