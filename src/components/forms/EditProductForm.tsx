@@ -18,11 +18,9 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const requiredErrorMessage = 'This field is required'
-
 const categoryOptions = categories.map((category) => {
   return { label: category, value: category }
 })
-
 const schema = yup.object({
   name: yup.string().required(),
   description: yup.string(),
@@ -42,31 +40,37 @@ type Props = {
   onCloseModal?: () => void
   productToEdit: Product
 }
-
 function EditProductForm({ onCloseModal, productToEdit }: Props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormValues>({
     defaultValues: productToEdit,
     resolver: yupResolver(schema),
   })
-  const queryClient = useQueryClient()
 
+  const queryClient = useQueryClient()
   const { data, error, isPending, isSuccess, mutate } = useMutation({
     mutationFn: editProduct(productToEdit.id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['products'],
-      })
+    onSuccess: (data) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (currentValue?: Product[]) => {
+          return currentValue?.map((item) => {
+            return data.id === item.id ? data : item
+          })
+        },
+      )
     },
   })
-
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     mutate(data)
+    reset(productToEdit)
   }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       <TextField
@@ -77,7 +81,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
         {...register('name', { required: requiredErrorMessage })}
         error={errors.name?.message}
       />
-
       <div className="flex flex-col md:flex-row justify-between mb-6">
         <RadioGroup
           className="md:w-[35%] w-full"
@@ -87,7 +90,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
           {...register('category')}
           error={errors.category?.message}
         />
-
         <TextArea
           className="md:w-[62%] w-full"
           label="Product Description"
@@ -97,7 +99,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
           error={errors.description?.message}
         />
       </div>
-
       <TextField
         className="mb-6"
         label="Image"
@@ -106,7 +107,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
         {...register('image', { required: requiredErrorMessage })}
         error={errors.image?.message}
       />
-
       <Select
         className="mb-6"
         label="Color"
@@ -114,7 +114,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
         required
         {...register('color', { required: requiredErrorMessage })}
         error={errors.color?.message}
-        classNameSelect="p-2"
       />
 
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
@@ -127,7 +126,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
           {...register('price', { required: requiredErrorMessage })}
           error={errors.price?.message}
         />
-
         <NumberInput
           className="md:w-[42%] w-full"
           label="Stock Quantity"
@@ -145,19 +143,16 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
           error={errors.availability?.message}
         />
       </div>
-
       {error && (
         <p className="text-red-500 text-center text-lg">
           Something went wrong, please try again
         </p>
       )}
-
       {isSuccess && (
         <p className="text-green-500 text-center text-lg">
           Product "{data.name}" successfully edited
         </p>
       )}
-
       <div className="flex justify-center mt-4">
         <Button
           backgroundColor="blueDark"
@@ -183,5 +178,4 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
     </form>
   )
 }
-
 export default EditProductForm

@@ -1,6 +1,5 @@
 import { ForwardedRef, forwardRef } from 'react'
 import Label from './Label'
-import { twMerge } from 'tailwind-merge'
 
 type Props = {
   value?: string
@@ -23,7 +22,7 @@ const Select = forwardRef(
       required,
       placeholder,
       error,
-      classNameSelect,
+
       ...rest
     }: Props,
     ref: ForwardedRef<HTMLSelectElement>,
@@ -32,10 +31,7 @@ const Select = forwardRef(
       <div className={className}>
         {label && <Label required={required}>{label}</Label>}
         <select
-          className={twMerge(
-            'w-full border-2 border-blue-400  focus:outline-none focus:ring-1 rounded-md focus:ring-blue-400 text-gray-700 font-semibold',
-            classNameSelect,
-          )}
+          className="w-full border-2 border-blue-400 p-2 focus:outline-none focus:ring-1 rounded-md focus:ring-blue-400 text-gray-700 font-semibold"
           placeholder={placeholder}
           ref={ref}
           {...rest}

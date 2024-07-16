@@ -3,7 +3,7 @@ import Table from '../components/common/Table'
 import {
   Product,
   deleteProduct,
-  getAllProductsPaginated,
+  getAllProducts,
   updateAvailability,
 } from '../services/products'
 import TextField from '../components/common/TextField'
@@ -26,11 +26,7 @@ function Admin() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [productToEdit, setProductToEdit] = useState<Product | null>(null)
   const [showOptions, setShowOptions] = useState(false)
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(5)
-
   const { toast } = useContext(ToastContext)
-
   const config: TableConfig = [
     {
       label: 'Product Name',
@@ -106,13 +102,19 @@ function Admin() {
       },
     },
   ]
-
   const updateAvailabilityQuery = useMutation({
     mutationFn: updateAvailability,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['products'],
-      })
+    onSuccess: (data) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (currentValue?: Product[]) => {
+          return currentValue?.map((item) => {
+            return data.id === item.id ? data : item
+          })
+        },
+      )
       toast({
         message: `Successfully edited a product.`,
         type: 'success',
@@ -125,26 +127,25 @@ function Admin() {
       })
     },
   })
-
   const productsQuery = useQuery({
-    queryKey: ['products', searchItem, page, limit],
-    queryFn: () =>
-      getAllProductsPaginated(
-        `?name_like=${searchItem}&_page=${page}&_limit=${limit}`,
-      ),
+    queryKey: ['products', searchItem],
+    queryFn: () => getAllProducts(`?name_like=${searchItem}`),
   })
 
   const { error, isLoading, data } = productsQuery
-
   const queryClient = useQueryClient()
-
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['products'],
-      })
-
+    onSuccess: (_, productId) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (currentValue?: Product[]) => {
+          const newValue = currentValue?.filter((v) => v.id !== productId)
+          return newValue
+        },
+      )
       toast({
         message: `Successfully deleted product.`,
         type: 'success',
@@ -154,22 +155,18 @@ function Admin() {
       toast({ message: `Failed to delete product`, type: 'error' })
     },
   })
-
   const handleOpenModal = () => {
     setShowModal(true)
   }
   const handleCloseModal = () => {
     setShowModal(false)
   }
-
   const handleSearchItem = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchItem(e.target.value)
   }
-
   const handleCloseEditModal = () => {
     setShowEditModal(false)
   }
-
   return (
     <>
       {showModal && (
@@ -200,19 +197,19 @@ function Admin() {
         </Modal>
       )}
       <div className="flex flex-col items-center">
-        <div className="flex my-10">
+        <div className="flex my-12">
           <Button
             backgroundColor="blueLight"
             hover="blueDark"
             rounded="xl2"
             fontWeight="bold"
-            className="mr-16 px-6 py-2 text-lg flex items-center"
+            className="mr-16  px-6 py-2 text-lg flex items-center"
             onClick={handleOpenModal}
           >
+            {' '}
             <IoMdAddCircleOutline className="mr-2 w-[24px] h-[24px]" />
             Add Product
           </Button>
-
           <TextField
             withIcon
             placeholder="Search Product"
@@ -221,21 +218,14 @@ function Admin() {
             value={searchItem}
           />
         </div>
-
         <Table
-          data={data?.data || []}
+          data={data || []}
           isLoading={isLoading}
           error={error}
           config={config}
-          page={page}
-          limit={limit}
-          lastPage={data?.lastPage}
-          setPage={setPage}
-          setLimit={setLimit}
         />
       </div>
     </>
   )
 }
-
 export default Admin
