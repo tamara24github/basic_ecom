@@ -1,11 +1,7 @@
 import { jsonServerApi } from './jsonServerApi'
-
 const PATH = '/products'
-
 export type Color = 'Black' | 'Gray' | 'Navy Blue' | 'Burgundy'
-
 export const colors: Color[] = ['Black', 'Burgundy', 'Gray', 'Navy Blue']
-
 export type Category =
   | 'Jackets'
   | 'Footwear'
@@ -13,7 +9,6 @@ export type Category =
   | 'Accessories'
   | 'Bottoms'
   | 'Shirts'
-
 export const categories: Category[] = [
   'Accessories',
   'Bottoms',
@@ -22,7 +17,6 @@ export const categories: Category[] = [
   'Shirts',
   'Snowsuits',
 ]
-
 export type Product = {
   id: string
   name: string
@@ -34,13 +28,8 @@ export type Product = {
   stockQuantity: number
   image: string
 }
-
 export const getAllProducts = (query?: string) =>
   jsonServerApi<Product[]>(PATH, undefined, query)
-
-export const getAllProductsPaginated = (query?: string) =>
-  jsonServerApi<{ lastPage: number; data: Product[] }>(PATH, undefined, query)
-
 export type CreateProductPayload = {
   name: string
   description?: string
@@ -53,12 +42,10 @@ export type CreateProductPayload = {
 }
 
 type EditProductPayload = CreateProductPayload
-
 type updateAvailabilityPayload = {
   id: string
   payload: boolean
 }
-
 export const createProduct = (payload: CreateProductPayload) =>
   jsonServerApi<Product>(PATH, {
     method: 'POST',
@@ -67,7 +54,6 @@ export const createProduct = (payload: CreateProductPayload) =>
     },
     body: JSON.stringify(payload),
   })
-
 export const deleteProduct = (id: string = '') =>
   jsonServerApi<Product>(`${PATH}/${id}`, {
     method: 'DELETE',
@@ -75,7 +61,6 @@ export const deleteProduct = (id: string = '') =>
       'Content-Type': 'application/json; charset=UTF-8',
     },
   })
-
 export const editProduct =
   (id: string = '') =>
   (payload: EditProductPayload) =>
@@ -86,7 +71,6 @@ export const editProduct =
       },
       body: JSON.stringify(payload),
     })
-
 export const updateAvailability = ({
   payload,
   id,

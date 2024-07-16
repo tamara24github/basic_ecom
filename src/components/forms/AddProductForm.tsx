@@ -1,6 +1,7 @@
 import TextField from '../common/TextField'
 import {
   CreateProductPayload,
+  Product,
   categories,
   colors,
   createProduct,
@@ -11,8 +12,9 @@ import RadioGroup from '../common/RadioGroup'
 import Checkbox from '../common/Checkbox'
 import Select from '../common/Select'
 import Button from '../common/Button'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
+
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -51,7 +53,6 @@ const colorOptions = colors.map((color) => ({ label: color, value: color }))
 type Props = {
   onCloseModal?: () => void
 }
-
 function AddProductForm({ onCloseModal }: Props) {
   const {
     register,
@@ -62,9 +63,19 @@ function AddProductForm({ onCloseModal }: Props) {
     defaultValues: defaultFormValues,
     resolver: yupResolver(schema),
   })
-
+  const queryClient = useQueryClient()
   const { data, error, isPending, isSuccess, mutate } = useMutation({
     mutationFn: createProduct,
+    onSuccess: (data) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (currentValue?: Product[]) => {
+          return currentValue ? [...currentValue, data] : [data]
+        },
+      )
+    },
   })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -82,7 +93,6 @@ function AddProductForm({ onCloseModal }: Props) {
         {...register('name', { required: requiredErrorMessage })}
         error={errors.name?.message}
       />
-
       <div className="flex flex-col md:flex-row justify-between mb-6">
         <RadioGroup
           className="md:w-[35%] w-full"
@@ -92,7 +102,6 @@ function AddProductForm({ onCloseModal }: Props) {
           {...register('category')}
           error={errors.category?.message}
         />
-
         <TextArea
           className="md:w-[62%] w-full"
           label="Product Description"
@@ -102,7 +111,6 @@ function AddProductForm({ onCloseModal }: Props) {
           error={errors.description?.message}
         />
       </div>
-
       <TextField
         className="mb-6"
         label="Image"
@@ -111,7 +119,6 @@ function AddProductForm({ onCloseModal }: Props) {
         {...register('image', { required: requiredErrorMessage })}
         error={errors.image?.message}
       />
-
       <Select
         className="mb-6"
         label="Color"
@@ -119,7 +126,6 @@ function AddProductForm({ onCloseModal }: Props) {
         required
         {...register('color', { required: requiredErrorMessage })}
         error={errors.color?.message}
-        classNameSelect="p-2"
       />
 
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
@@ -132,7 +138,6 @@ function AddProductForm({ onCloseModal }: Props) {
           {...register('price', { required: requiredErrorMessage })}
           error={errors.price?.message}
         />
-
         <NumberInput
           className="md:w-[42%] w-full"
           label="Stock Quantity"
@@ -150,19 +155,16 @@ function AddProductForm({ onCloseModal }: Props) {
           error={errors.availability?.message}
         />
       </div>
-
       {error && (
         <p className="text-red-500 text-center text-lg">
           Something went wrong, please try again
         </p>
       )}
-
       {isSuccess && (
         <p className="text-green-500 text-center text-lg">
           Product "{data.name}" successfully added
         </p>
       )}
-
       <div className="flex justify-center mt-4">
         <Button
           backgroundColor="blueDark"
@@ -189,5 +191,4 @@ function AddProductForm({ onCloseModal }: Props) {
     </form>
   )
 }
-
 export default AddProductForm
