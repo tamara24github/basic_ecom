@@ -45,7 +45,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<FormValues>({
     defaultValues: productToEdit,
     resolver: yupResolver(schema),
@@ -69,7 +68,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
   })
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     mutate(data)
-    reset(productToEdit)
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
