@@ -36,7 +36,12 @@ export const ToastContextProvider = ({
     message: string
     type: Toast['type']
   }) => {
-    setToasts((prevState) => [...prevState, { id: nanoid(), message, type }])
+    const id = nanoid()
+    setToasts((prevState) => [...prevState, { id, message, type }])
+
+    setTimeout(() => {
+      deleteToastById(id)
+    }, 3500)
   }
 
   const deleteToastById = (id: string) => {
