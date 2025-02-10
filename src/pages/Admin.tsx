@@ -81,7 +81,7 @@ function Admin() {
                 </Button>
               }
             >
-              <div className=" flex flex-col w-[100px] p-1 items-strech justify-stretch bg-blue-950 rounded-xl">
+              <div className=" flex flex-col w-[100px] p-1 items-strech justify-stretch bg-blue-950 rounded-xl ">
                 {actions.map((action, i) => {
                   return (
                     <Button
@@ -212,7 +212,7 @@ function Admin() {
           </Button>
           <TextField
             withIcon
-            placeholder="Search Product"
+            placeholder="Search Product Name"
             className="md:w-[500px]"
             onChange={handleSearchItem}
             value={searchItem}

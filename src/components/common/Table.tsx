@@ -26,7 +26,7 @@ function Table({ data, isLoading, error, config }: TableProps) {
             return (
               <td
                 className={twMerge(
-                  'py-2 px-7 bg-blue-950 text-white font-bold text-lg border-2  border-teal-100 rounded-b-[11px] drop-shadow-md ',
+                  'py-4 px-7 bg-blue-950 text-white font-bold text-lg border-2 shadow-xl hover:scale-105  border-teal-100 rounded-b-[11px] drop-shadow-md ',
                   [1, 2].includes(index) && 'hidden md:table-cell',
                 )}
                 key={tableHeader.label}
@@ -37,7 +37,7 @@ function Table({ data, isLoading, error, config }: TableProps) {
           })}
         </tr>
       </thead>
-      <tbody>
+      <tbody className="backdrop-blur-sm bg-opacity-30">
         {!data.length && !isLoading && !error && (
           <tr>
             <td className="text-center" colSpan={8}>
@@ -79,14 +79,16 @@ function Table({ data, isLoading, error, config }: TableProps) {
             <tr
               key={row.id}
               className={
-                index % 2 === 0 ? 'bg-blue-50 ' : 'bg-blue-100 bg-opacity-[0.8]'
+                index % 2 === 0
+                  ? 'bg-blue-50 bg-opacity-[0.8] shadow-md shadow-gray-300 hover:bg-teal-200 rounded-md'
+                  : 'bg-blue-100 bg-opacity-[0.8] shadow-md shadow-gray-300 hover:bg-teal-200 rounded-md '
               }
             >
               {config.map((configItem, index) => {
                 return (
                   <td
                     className={twMerge(
-                      'font-semibold text-blue-950 px-2 py-2  border-b-2 border-teal-200 border-dashed ',
+                      'font-semibold text-blue-950 px-2 py-2  border-b-2  bg-opacity-40',
                       [1, 2].includes(index) && 'hidden md:table-cell',
                     )}
                     key={configItem.label}
