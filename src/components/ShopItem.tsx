@@ -3,7 +3,8 @@ import Paragraph from './common/Paragraph'
 import Button from './common/Button'
 import Heading from './common/Heading'
 import { CartContext } from '../contexts/CartContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
+import { MdOutlineAddShoppingCart } from 'react-icons/md'
 
 type Props = {
   product: Product
@@ -11,9 +12,18 @@ type Props = {
 
 function ShopItem({ product }: Props) {
   const { addCartItem } = useContext(CartContext)
+  const [isClicked, setIsClicked] = useState(false)
+
+  const handleButtonClick = () => {
+    setIsClicked(true)
+    addCartItem(product)
+    setTimeout(() => {
+      setIsClicked(false)
+    }, 350)
+  }
 
   return (
-    <li className="border-2 border-blue-150 bg-blue-50 flex flex-col items-center drop-shadow-md p-1.5">
+    <li className="border-2 border-blue-150 bg-blue-50 flex flex-col items-center drop-shadow-md p-1.5 transform transition duration-200 hover:scale-105">
       <img
         src={product.image}
         alt="image"
@@ -41,10 +51,12 @@ function ShopItem({ product }: Props) {
         hover="blueLight"
         fontWeight="semibold"
         textColor="white"
-        className="w-full p-2 mt-auto text-lg "
-        onClick={() => addCartItem(product)}
+        className={`flex justify-center items-center w-full p-2 mt-auto text-lg transform transition duration-200 ${
+          isClicked ? 'scale-90  text-blue-500' : ''
+        }`}
+        onClick={handleButtonClick}
       >
-        + Add to Cart
+        <MdOutlineAddShoppingCart className="mr-2" /> Add to Cart
       </Button>
     </li>
   )

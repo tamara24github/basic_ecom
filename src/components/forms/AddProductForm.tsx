@@ -1,7 +1,6 @@
 import TextField from '../common/TextField'
 import {
   CreateProductPayload,
-  Product,
   categories,
   colors,
   createProduct,
@@ -14,7 +13,6 @@ import Select from '../common/Select'
 import Button from '../common/Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
-
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -64,17 +62,14 @@ function AddProductForm({ onCloseModal }: Props) {
     resolver: yupResolver(schema),
   })
   const queryClient = useQueryClient()
-  const { data, error, isPending, isSuccess, mutate } = useMutation({
+
+  // Use mutation for adding a product
+  const { mutate, isPending, error, isSuccess, data } = useMutation({
     mutationFn: createProduct,
-    onSuccess: (data) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          return currentValue ? [...currentValue, data] : [data]
-        },
-      )
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+
+      queryClient.refetchQueries({ queryKey: ['products'] })
     },
   })
 
@@ -127,7 +122,6 @@ function AddProductForm({ onCloseModal }: Props) {
         {...register('color', { required: requiredErrorMessage })}
         error={errors.color?.message}
       />
-
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
         <NumberInput
           className="md:w-[42%] w-full"
@@ -162,7 +156,7 @@ function AddProductForm({ onCloseModal }: Props) {
       )}
       {isSuccess && (
         <p className="text-green-500 text-center text-lg">
-          Product "{data.name}" successfully added
+          Product "{data?.name}" successfully added
         </p>
       )}
       <div className="flex justify-center mt-4">

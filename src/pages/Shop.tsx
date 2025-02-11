@@ -43,7 +43,7 @@ function Shop() {
           withIcon
           onChange={handleSearchItem}
           value={searchItem}
-          placeholder="Search"
+          placeholder="Search by Product Name"
           className=" md:w-[600px]"
         />
       </div>

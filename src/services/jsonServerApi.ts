@@ -16,7 +16,6 @@ export const jsonServerApi = async <ApiResponse>(
     return Promise.reject(error)
   }
 }
-
 const getLastPageFromResponse = (response: Response) => {
   const linkHeader = response.headers.get('Link')
   if (linkHeader === '') return 1
