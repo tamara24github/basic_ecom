@@ -9,12 +9,17 @@ import CartItem from './CartItem'
 function Cart() {
   const { cartItems, cartCount, total } = useContext(CartContext)
 
+  const cartHasItems = cartCount > 0
+
   return (
     <Popper
-      className=" w-[450px] p-4 border-2 rounded-xl bg-white right-8 top-8"
+      className="w-[450px] p-4 border-2 rounded-xl bg-white right-8 top-8"
       anchorElement={
         <div className="relative flex flex-col">
-          <div className="bg-blue-950 w-5 text-center rounded-full font-semibold  text-white absolute right-[23px]">
+          <div
+            className={`bg-blue-950 w-5 text-center rounded-full font-semibold text-white absolute right-[23px] transform transition-all duration-300 
+              ${cartHasItems ? 'bg-green-500 animate-pulse' : 'bg-blue-950'}`}
+          >
             {cartCount}
           </div>
           <TiShoppingCart className="text-4xl text-blue-950 mr-4 mt-[18px] cursor-pointer" />

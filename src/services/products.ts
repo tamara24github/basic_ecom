@@ -40,6 +40,8 @@ export type CreateProductPayload = {
   color: string
   availability: boolean
 }
+export const getAllProductsPaginated = (query?: string) =>
+  jsonServerApi<{ lastPage: number; data: Product[] }>(PATH, undefined, query)
 
 type EditProductPayload = CreateProductPayload
 type updateAvailabilityPayload = {

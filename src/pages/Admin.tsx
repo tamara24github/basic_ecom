@@ -3,7 +3,7 @@ import Table from '../components/common/Table'
 import {
   Product,
   deleteProduct,
-  getAllProducts,
+  getAllProductsPaginated,
   updateAvailability,
 } from '../services/products'
 import TextField from '../components/common/TextField'
@@ -26,6 +26,9 @@ function Admin() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [productToEdit, setProductToEdit] = useState<Product | null>(null)
   const [showOptions, setShowOptions] = useState(false)
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(5)
+
   const { toast } = useContext(ToastContext)
   const config: TableConfig = [
     {
@@ -102,19 +105,24 @@ function Admin() {
       },
     },
   ]
+
+  const productsQuery = useQuery({
+    queryKey: ['products', searchItem, page, limit],
+    queryFn: () =>
+      getAllProductsPaginated(
+        `?name_like=${searchItem}&_page=${page}&_limit=${limit}`,
+      ),
+  })
+
+  const { error, isLoading, data } = productsQuery
+  const queryClient = useQueryClient()
+
   const updateAvailabilityQuery = useMutation({
     mutationFn: updateAvailability,
-    onSuccess: (data) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          return currentValue?.map((item) => {
-            return data.id === item.id ? data : item
-          })
-        },
-      )
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['products', searchItem, page, limit],
+      })
       toast({
         message: `Successfully edited a product.`,
         type: 'success',
@@ -127,34 +135,39 @@ function Admin() {
       })
     },
   })
-  const productsQuery = useQuery({
-    queryKey: ['products', searchItem],
-    queryFn: () => getAllProducts(`?name_like=${searchItem}`),
-  })
 
-  const { error, isLoading, data } = productsQuery
-  const queryClient = useQueryClient()
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: (_, productId) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          const newValue = currentValue?.filter((v) => v.id !== productId)
-          return newValue
-        },
-      )
-      toast({
-        message: `Successfully deleted product.`,
-        type: 'success',
+      queryClient.invalidateQueries({
+        queryKey: ['products', searchItem, page, limit],
       })
+
+      queryClient.setQueriesData(
+        { queryKey: ['products', page, limit] },
+        (oldData?: { data: Product[]; lastPage: number }) => {
+          if (oldData) {
+            const filteredData = oldData.data.filter(
+              (product) => product.id !== productId,
+            )
+            return { ...oldData, data: filteredData }
+          }
+          return oldData
+        },
+      ),
+        toast({
+          message: `Successfully deleted a product.`,
+          type: 'success',
+        })
     },
     onError: () => {
-      toast({ message: `Failed to delete product`, type: 'error' })
+      toast({
+        message: `Failed to delete a product`,
+        type: 'error',
+      })
     },
   })
+
   const handleOpenModal = () => {
     setShowModal(true)
   }
@@ -219,10 +232,15 @@ function Admin() {
           />
         </div>
         <Table
-          data={data || []}
+          data={data?.data || []}
           isLoading={isLoading}
           error={error}
           config={config}
+          page={page}
+          limit={limit}
+          lastPage={data?.lastPage}
+          setPage={setPage}
+          setLimit={setLimit}
         />
       </div>
     </>

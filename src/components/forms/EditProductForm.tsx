@@ -51,24 +51,20 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
   })
 
   const queryClient = useQueryClient()
-  const { data, error, isPending, isSuccess, mutate } = useMutation({
-    mutationFn: editProduct(productToEdit.id),
-    onSuccess: (data) => {
-      queryClient.setQueriesData(
-        {
-          queryKey: ['products'],
-        },
-        (currentValue?: Product[]) => {
-          return currentValue?.map((item) => {
-            return data.id === item.id ? data : item
-          })
-        },
-      )
+
+  const { mutate, isPending, error, isSuccess, data } = useMutation({
+    mutationFn: (data: FormValues) => editProduct(productToEdit.id)(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+
+      queryClient.refetchQueries({ queryKey: ['products'] })
     },
   })
+
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     mutate(data)
   }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       <TextField
@@ -113,7 +109,6 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
         {...register('color', { required: requiredErrorMessage })}
         error={errors.color?.message}
       />
-
       <div className="flex flex-col md:flex-row mb-6 justify-between w-full">
         <NumberInput
           className="md:w-[42%] w-full"
@@ -148,7 +143,7 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
       )}
       {isSuccess && (
         <p className="text-green-500 text-center text-lg">
-          Product "{data.name}" successfully edited
+          Product "{data?.name}" successfully edited
         </p>
       )}
       <div className="flex justify-center mt-4">
@@ -176,4 +171,5 @@ function EditProductForm({ onCloseModal, productToEdit }: Props) {
     </form>
   )
 }
+
 export default EditProductForm

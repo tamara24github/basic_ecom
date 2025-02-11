@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      screens: {
+        'xl-1260': '1260px', // Custom breakpoint for 1260px
+      },
       animation: {
         toast: 'toast 3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'rotate-pulse': 'rotatePulse 10s ease-in-out infinite',
