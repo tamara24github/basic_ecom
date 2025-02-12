@@ -205,7 +205,6 @@ function Table({
           end <TiArrowForward className="ml-1" />
         </Button>
 
-        {/* The section below will be moved below the pagination buttons on smaller screens */}
         <div className="flex gap-3 items-center flex-wrap justify-center w-full mt-4 md:hidden">
           <Paragraph weight="semibold" color="blueDark">
             Go to page:
@@ -227,7 +226,6 @@ function Table({
           />
         </div>
 
-        {/* Keep this visible for larger screens (from 768px up) */}
         <div className="hidden md:flex gap-3 items-center absolute right-11 flex-wrap">
           <Paragraph weight="semibold" color="blueDark">
             Go to page:

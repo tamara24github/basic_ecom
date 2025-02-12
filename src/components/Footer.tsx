@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer className="flex justify-center w-full mb-2">
       <Paragraph size="md" color="black">
-        © 2023 John Doe All rights reserved.
+        © {new Date().getFullYear()} John Doe All rights reserved.
       </Paragraph>
     </footer>
   )
